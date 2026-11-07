@@ -8,6 +8,24 @@ cfg = yaml.safe_load(open(f"{B}/config/skills-config.yaml"))
 skills = {s["invoke_as"]: s for s in cat["skills"]}
 cmds = {c["id"]: c for c in cat["commands"]}
 valid = set(skills) | set(cmds)
+profile = yaml.safe_load(open(f"{B}/config/plugin-profile.yaml"))
+OFF = {d["name"] for d in profile.get("disable", [])}
+
+def plugin_of(i):
+    return (skills.get(i) or cmds.get(i) or {}).get("plugin")
+
+def available(i):
+    """Enabled in the catalog and its plugin not turned off by the plugin profile."""
+    rec = skills.get(i) or cmds.get(i)
+    return bool(rec) and rec.get("enabled", True) and rec.get("plugin") not in OFF
+
+def effective(route):
+    """First available skill in use, then alternates. Returns (id, is_fallback) or (None, False)."""
+    for i in route.get("use", []):
+        if available(i): return i, False
+    for i in route.get("alternates", []) or []:
+        if available(i): return i, True
+    return None, False
 
 def esc(s): return (s or "").replace("|", "\\|").replace("\n", " ")
 def short(s, n=220):
@@ -19,11 +37,22 @@ for r in cfg["routing"]:
     for k in ("use", "then", "alternates"):
         for i in r.get(k, []) or []:
             if i not in valid: bad.append((r["intent"], i))
+for r in cfg["routing"]:
+    if effective(r)[0] is None and not r.get("profile_off_ok"):
+        bad.append((r["intent"], "no available skill after plugin profile"))
 for k, o in cfg["overlaps"].items():
     for i in [o["primary"], *o["others"]]:
         if i not in valid: bad.append((k, i))
+    if not available(o["primary"]): bad.append((k, f"primary {o['primary']} unavailable under plugin profile"))
 for i in (x for r in cfg["routing"] for k in ("use","then","alternates") for x in r.get(k,[]) or []):
     if i in skills and not skills[i]["enabled"]: bad.append(("disabled", i))
+# CLAUDE.md is loaded into every session: keep it small and its IDs live.
+CLAUDE_MD_BUDGET = 2500  # chars (~625 tokens)
+claude_md = open(f"{B}/CLAUDE.md").read()
+if len(claude_md) > CLAUDE_MD_BUDGET:
+    bad.append(("CLAUDE.md", f"{len(claude_md)} chars > budget {CLAUDE_MD_BUDGET}"))
+for i in re.findall(r"`([\w-]+:[\w-]+)`", claude_md):
+    if not available(i): bad.append(("CLAUDE.md", f"{i} not available"))
 if bad:
     print("INVALID IDS:"); [print("  ", b) for b in bad]; sys.exit(1)
 
@@ -47,7 +76,7 @@ c = cat["counts"]
 L += ["# Skills Catalog", "",
       f"_Generated {cat['generated_at']} by `scripts/render_docs.py` — do not edit by hand; edit `config/` and re-run._", "",
       f"**{c['plugins']} plugins · {c['skills']} skills ({c['skills_enabled']} enabled in Claude Code) · {c['commands']} slash commands · {c['agents']} subagents**", "",
-      "Legend: ✅ invocable via `Skill` tool in Claude Code · ⬜ present on disk but not exposed (disabled, in-progress, or claude.ai-only library skill).", "",
+      "Legend: ✅ invocable via `Skill` tool in Claude Code · ⏸ plugin turned off by `config/plugin-profile.yaml` (re-enable per project) · ⬜ present on disk but not exposed (disabled, in-progress, or claude.ai-only library skill).", "",
       "Invoke: `Skill(skill=\"<id>\")` — or type `/<id>` as the user.", "", "## Contents", ""]
 order = list(cfg["categories"].keys()) + ["Uncategorized"]
 groups = defaultdict(list)
@@ -71,7 +100,7 @@ for g in order:
         L.append("")
     for k in sorted((k for k in keys if not k.startswith("builtin:")), key=str.lower):
         pm = pmeta.get(k, {})
-        L += [f"### {k}" + (f" `v{pm['version']}`" if pm.get("version") else ""), ""]
+        L += [f"### {k}" + (f" `v{pm['version']}`" if pm.get("version") else "") + (" ⏸ off by plugin profile" if k in OFF else ""), ""]
         if pm.get("description"): L += [f"_{esc(pm['description'])}_", ""]
         extra = []
         if pm.get("homepage"): extra.append(f"Source: {pm['homepage']}")
@@ -82,7 +111,8 @@ for g in order:
         if ss:
             L += ["| Skill | | Description |", "|---|---|---|"]
             for s in ss:
-                L.append(f"| `{s['invoke_as']}` | {'✅' if s['enabled'] else '⬜'} | {short(s['description'])} |")
+                mark = '⬜' if not s['enabled'] else ('⏸' if k in OFF else '✅')
+                L.append(f"| `{s['invoke_as']}` | {mark} | {short(s['description'])} |")
             L.append("")
         pc = [x for x in cat["commands"] if x["plugin"] == k]
         if pc:
@@ -99,10 +129,17 @@ R = ["# Skill Routing Guide", "",
      f"_Generated {cat['generated_at']} from `config/skills-config.yaml`._", "",
      "Use this to pick a skill fast. **Use** = load first. **Then** = follow-on skills. **Alternates** = only if named by the user or the primary doesn't fit.", "",
      "## Global rules", ""] + [f"{i+1}. {r}" for i, r in enumerate(cfg["rules"])] + ["", "## Intent → skill", "",
+     f"⏸ = plugin off by default (`config/plugin-profile.yaml`: {', '.join(sorted(OFF))}). When the primary is off, **Use** shows the first available fallback; re-enable the plugin per project to get the original.", "",
      "| When the task is… | Use | Then | Alternates |", "|---|---|---|---|"]
-fmt = lambda xs: ", ".join(f"`{x}`" for x in (xs or [])) or "—"
+def fmt(xs):
+    return ", ".join(f"`{x}`" + ("" if available(x) else " ⏸") for x in (xs or [])) or "—"
 for r in cfg["routing"]:
-    R.append(f"| {esc(r['intent'])} | {fmt(r['use'])} | {fmt(r.get('then'))} | {fmt(r.get('alternates'))} |")
+    eff, fb = effective(r)
+    if eff:
+        use = f"`{eff}`" + (f" (fallback; primary {fmt(r['use'])})" if fb else "")
+    else:
+        use = fmt(r["use"]) + f" — enable `{plugin_of(r['use'][0])}@synced` in the project"
+    R.append(f"| {esc(r['intent'])} | {use} | {fmt(r.get('then'))} | {fmt(r.get('alternates'))} |")
 R += ["", "## Overlap resolution", "", "Several plugins teach the same discipline. Default to the primary.", "",
       "| Topic | Primary | Others (equivalent) |", "|---|---|---|"]
 for k, o in cfg["overlaps"].items():
@@ -114,4 +151,9 @@ R += [f"| `{k}` | {v} |" for k, v in m["skills_needing_mcp"].items()]
 R += ["", f"> {m['note']}", "", "## Subagents", "", "| Agent type | Purpose |", "|---|---|"]
 R += [f"| `{a['id']}` | {short(a['description'],180)} |" for a in cat["agents"]]
 open(f"{B}/docs/ROUTING.md", "w").write("\n".join(R) + "\n")
-print("ok", len(cfg["routing"]), "routes,", len(L), "catalog lines")
+# AGENTS.md mirrors CLAUDE.md for other harnesses / claude.ai Project instructions.
+open(f"{B}/AGENTS.md", "w").write(
+    "<!-- Generated from CLAUDE.md by scripts/render_docs.py. Edit CLAUDE.md instead. -->\n"
+    "# AGENTS.md\n\nSkills routing guide for any agent. In claude.ai, paste into Project instructions.\n\n"
+    + claude_md.split("\n", 1)[1].lstrip())
+print("ok", len(cfg["routing"]), "routes,", len(L), "catalog lines,", len(claude_md), "chars CLAUDE.md")

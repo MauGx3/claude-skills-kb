@@ -15,6 +15,8 @@ Primary skill per discipline (use the others only when the user names them):
 - Skill authoring: `skill-creator:skill-creator`. Memory: `claude-memory:structured-memory`.
 - Claude API work: `claude-api`, always. Settings and hooks: `update-config`.
 
+Off by default (config/plugin-profile.yaml): zizi-skills, mattpocock-skills, research-superpowers, contentasoft-cad-converter. To use one in a project, add `{"enabledPlugins": {"<name>@synced": true}}` to that project's `.claude/settings.json`.
+
 **Why:** Overlapping plugins (superpowers, agent-protocols, mattpocock-skills, zizi-skills) teach the same disciplines in different ways. Picking one primary keeps behaviour consistent.
 
 **How to apply:** Look up the task in `docs/ROUTING.md` (88 intents), then load the "Use" skill.

@@ -9,8 +9,8 @@ written so agents in **Claude Code** and **claude.ai** pick the right skill on t
 
 | Path | Purpose | Audience |
 |---|---|---|
-| `CLAUDE.md` | Short operating rules and a "primary skill per task" table. Claude Code auto-loads it. | Claude Code agents |
-| `AGENTS.md` | The same guide for other harnesses and claude.ai Project instructions | Any agent |
+| `CLAUDE.md` | Compact routing rules (~490 tokens, capped at 2,500 chars because it loads in every session) | Claude Code agents |
+| `AGENTS.md` | Generated from CLAUDE.md for other harnesses and claude.ai Project instructions | Any agent |
 | `docs/ROUTING.md` | 88 intent → skill routes, overlap resolution, MCP dependencies, subagents | Agents and humans |
 | `docs/CATALOG.md` | Every plugin, skill, command and subagent, grouped into 14 categories, with ✅/⬜ enabled flags | Reference |
 | `catalog/skills-catalog.json` | Machine-readable catalog: id, plugin, description, enabled flag, allowed tools, path | Scripts and agents |
@@ -22,7 +22,10 @@ written so agents in **Claude Code** and **claude.ai** pick the right skill on t
 | `scripts/build_catalog.py` | Rescans the plugin folders and rebuilds the JSON catalog | Maintenance |
 | `scripts/render_docs.py` | Renders CATALOG.md and ROUTING.md, and checks every routed ID exists and is enabled | Maintenance |
 | `scripts/find_skill.py` | Keyword search: `python3 scripts/find_skill.py "merge pdf"` | Agents |
-| `install.sh` | Installs into `~/.claude` or into a project | Setup |
+| `config/plugin-profile.yaml` | Plugins to turn off for a smaller context baseline, with reasons | Edit this |
+| `scripts/plugin_profile.py` | Applies the profile with `claude plugin disable` (dry run by default) | Setup |
+| `tests/` | Installer, renderer, profile and search tests (`python3 -m unittest discover -s tests`) | Maintenance |
+| `install.sh` | Installs into `~/.claude` or a project; `plugins` mode applies the profile | Setup |
 
 ## Install
 
@@ -36,6 +39,16 @@ One project (adds CLAUDE.md, `.claude/skills/skill-router` and the memory files)
 
 ```bash
 ./install.sh project /path/to/repo
+```
+
+Turn off the plugins in `config/plugin-profile.yaml` (dry run first, then apply, then restart Claude Code):
+
+```bash
+./install.sh plugins
+```
+
+```bash
+./install.sh plugins --apply
 ```
 
 **claude.ai:** paste `AGENTS.md` into a Project's custom instructions, or upload `docs/ROUTING.md` as Project knowledge.
