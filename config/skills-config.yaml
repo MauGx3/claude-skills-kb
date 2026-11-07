@@ -1,0 +1,367 @@
+# Skills routing configuration for agents in Claude / Claude Code
+# Single source of truth for ROUTING.md (rendered by scripts/render_docs.py).
+# IDs are exactly what you pass to the Skill tool: Skill(skill="<id>").
+# Verified against the live session of 2026-11-07. Regenerate the catalog after plugin changes.
+
+version: 1
+
+# ---------------------------------------------------------------------------
+# Global rules every agent should follow
+# ---------------------------------------------------------------------------
+rules:
+  - 'Check this routing table BEFORE acting. If a skill plausibly applies (even ~1%), load it with the Skill tool and follow it.'
+  - 'Process skills first (brainstorming, debugging, planning), then domain/implementation skills.'
+  - 'When several skills overlap, use the `primary` in `overlaps` below; use alternates only if the user names them or the primary does not fit.'
+  - 'User instructions (CLAUDE.md / AGENTS.md / direct request) override skills; skills override defaults.'
+  - 'Subagents dispatched for a specific task skip the meta/orientation skills (using-superpowers etc.).'
+  - 'Skills that depend on an MCP server (see `mcp_dependencies`) fail if that server is disconnected — tell the user and fall back.'
+  - 'Never answer Claude/Anthropic API, model or pricing questions from memory: load `claude-api`.'
+  - 'Before any chart/dashboard: load `dataviz`. Before any Artifact page: load `artifact-design` (or run Artifact quickstart).'
+
+# ---------------------------------------------------------------------------
+# Categories -> plugins (used to group the catalog)
+# ---------------------------------------------------------------------------
+categories:
+  "Meta / orchestration / skill system":
+    plugins: [superpowers, agent-army, agent-discussion, adaptive-agent, skill-creator, task-observer, claude-md-management, claude-code-setup, setup-audit, session-report, receipts, ai-mentor, flight-deck, agent-estimate, napkin-math]
+    builtins: [update-config, keybindings-help, fewer-permission-prompts, loop, plugin-authoring, init]
+  "Software engineering lifecycle":
+    plugins: [agent-protocols, mattpocock-skills, zizi-skills, code-review, code-simplifier, claude-security, security-guidance, modern-web-guidance]
+    builtins: [code-review, simplify, security-review, run, claude-api]
+  "Language / platform specific":
+    plugins: [qt-development-skills, cloudflare, pyright-lsp, typescript-lsp, rust-analyzer-lsp, lua-lsp, github, contentasoft-cad-converter]
+  "Frontend, UI & design":
+    plugins: [frontend-design, design-skills, design-superpowers, superdesign, animatedwebs, image-generation, abracadabrax-image-video]
+    builtins: [artifact-design, artifact-diagramming, artifact-capabilities, dataviz]
+  "Web search, scraping & browsing":
+    plugins: [firecrawl, tavily, exa, context7, browser-use, playwright, auto-research]
+  "Academic research & writing":
+    plugins: [research-superpowers]
+  "Writing, tone & humanizing":
+    plugins: [writing-skills, humanizer, humanize-kit, caveman]
+  "Documents & office files":
+    plugins: [anthropic-skills]
+  "Data & analytics":
+    plugins: [data]
+  "Finance & markets":
+    plugins: [finance, finance-tutor, equity-research, market-researcher, lseg, sp-global, vanguard-advisor-tools]
+  "Legal & governance":
+    plugins: [ai-governance-legal]
+  "Productivity, notes & memory":
+    plugins: [productivity, Notion, obsidian-notes, claude-memory, agent-memory, desktop-commander]
+  "Media (video/audio)":
+    plugins: [video-cleanup, ffmpeg-llm, youtube-transcriber, watch-video]
+  "Career & personal":
+    plugins: [rankedin, resumenext-linkedin-resume, github-portfolio-builder, adhd-study-coach]
+
+# ---------------------------------------------------------------------------
+# Intent routing: "when the task looks like X, load Y"
+# ---------------------------------------------------------------------------
+routing:
+  # --- Starting work / planning
+  - intent: New feature, idea or "let's build X" (before any code or plan mode)
+    use: [superpowers:brainstorming]
+    then: [superpowers:writing-plans]
+    alternates: [agent-protocols:idea-refine, agent-protocols:spec-driven-development, mattpocock-skills:grilling, zizi-skills:idea-refine]
+  - intent: Write a spec / PRD before coding
+    use: [agent-protocols:spec-driven-development]
+    alternates: [agent-protocols:spec, zizi-skills:planning]
+  - intent: Break work into tasks / implementation plan
+    use: [superpowers:writing-plans]
+    alternates: [agent-protocols:planning-and-task-breakdown, agent-protocols:plan, zizi-skills:planning]
+  - intent: Execute an existing written plan
+    use: [superpowers:subagent-driven-development]
+    alternates: [superpowers:executing-plans, agent-protocols:incremental-implementation, agent-protocols:build]
+  - intent: Estimate effort / back-of-envelope numbers
+    use: [napkin-math:estimate]
+    alternates: [napkin-math:sanity-check]
+  - intent: Throwaway prototype / spike / PoC
+    use: [mattpocock-skills:prototype]
+    alternates: [agent-protocols:research-spike-and-poc]
+
+  # --- Coding
+  - intent: Implementing any feature or bugfix with tests
+    use: [superpowers:test-driven-development]
+    alternates: [agent-protocols:test-driven-development, mattpocock-skills:tdd, zizi-skills:tdd-skill, agent-protocols:test]
+  - intent: Bug, failing test, unexpected behaviour
+    use: [superpowers:systematic-debugging]
+    alternates: [mattpocock-skills:diagnosing-bugs, agent-protocols:debugging-and-error-recovery, zizi-skills:debugging-and-error-recovery]
+  - intent: About to claim "done" / "fixed" / "tests pass"
+    use: [superpowers:verification-before-completion]
+    alternates: [zizi-skills:done]
+  - intent: Independent sub-tasks that can run in parallel
+    use: [superpowers:dispatching-parallel-agents]
+    alternates: [agent-army:agent-army, zizi-skills:orchestration]
+  - intent: Isolated workspace for feature work
+    use: [superpowers:using-git-worktrees]
+  - intent: Finish a branch (merge / PR / cleanup)
+    use: [superpowers:finishing-a-development-branch]
+    alternates: [agent-protocols:git-workflow-and-versioning, zizi-skills:git-sync]
+  - intent: Merge conflicts
+    use: [mattpocock-skills:resolving-merge-conflicts]
+  - intent: API / interface / module boundary design
+    use: [agent-protocols:api-and-interface-design]
+    alternates: [mattpocock-skills:codebase-design, mattpocock-skills:domain-modeling, zizi-skills:service-architecture]
+  - intent: Use official docs as source of truth for a library
+    use: [agent-protocols:source-driven-development]
+    alternates: [zizi-skills:source-driven-development, firecrawl:firecrawl-developer-index]
+  - intent: Frontend UI implementation (production quality)
+    use: [frontend-design:frontend-design]
+    alternates: [agent-protocols:frontend-ui-engineering, zizi-skills:frontend, modern-web-guidance:modern-web-guidance, zizi-skills:tabler-ui]
+  - intent: Performance problem
+    use: [agent-protocols:performance-optimization]
+    alternates: [cloudflare:web-perf, zizi-skills:database-optimization]
+  - intent: Security hardening of code
+    use: [agent-protocols:security-and-hardening]
+    alternates: [zizi-skills:security-and-hardening, security-review]
+  - intent: Deprecations / migrations
+    use: [agent-protocols:deprecation-and-migration]
+    alternates: [zizi-skills:deprecation-and-migration]
+  - intent: i18n / localization
+    use: [agent-protocols:internationalization-and-localization]
+    alternates: [zizi-skills:i18n]
+  - intent: CI/CD pipelines, release, launch checklist
+    use: [agent-protocols:ci-cd-and-automation, agent-protocols:shipping-and-launch]
+    alternates: [agent-protocols:ship, zizi-skills:infrastructure]
+  - intent: Production incident / postmortem
+    use: [agent-protocols:incident-response-and-postmortems]
+    alternates: [zizi-skills:monitoring]
+  - intent: ADRs / technical documentation
+    use: [agent-protocols:documentation-and-adrs]
+    alternates: [writing-skills:google-dev-docs]
+  - intent: Run the app / check a change in the real UI
+    use: [run]
+    alternates: [agent-protocols:browser-testing-with-devtools]
+  - intent: Building on the Claude API / Anthropic SDK / any LLM feature
+    use: [claude-api]
+  - intent: Qt / QML / C++ Qt
+    use: [qt-development-skills:qt-qml]
+    alternates: [qt-development-skills:qt-cmake-project, qt-development-skills:qt-qml-review, qt-development-skills:qt-cpp-review, qt-development-skills:qt-qml-test]
+  - intent: Cloudflare Workers / Durable Objects / Wrangler
+    use: [cloudflare:workers-best-practices]
+    alternates: [cloudflare:wrangler, cloudflare:durable-objects, cloudflare:agents-sdk, cloudflare:nextjs-on-cloudflare, cloudflare:cloudflare]
+  - intent: Chrome extension
+    use: [modern-web-guidance:chrome-extensions]
+
+  # --- Review
+  - intent: Review a diff / PR for bugs
+    use: [code-review]
+    alternates: [code-review:code-review, agent-protocols:code-review-and-quality, mattpocock-skills:code-review, zizi-skills:adversarial-review, superpowers:requesting-code-review]
+  - intent: Received review feedback to act on
+    use: [superpowers:receiving-code-review]
+  - intent: Simplify / clean up changed code
+    use: [simplify]
+    alternates: [agent-protocols:code-simplification, agent-protocols:code-simplify, zizi-skills:code-quality]
+  - intent: Security review of branch / full repo scan
+    use: [security-review]
+    alternates: [agent-protocols:security-and-hardening]   # full-repo scan: Agent(subagent_type="claude-security:claude-security")
+
+  # --- Claude Code configuration & self-improvement
+  - intent: Automated behaviour ("whenever X", "before/after X"), permissions, env vars
+    use: [update-config]
+  - intent: Reduce permission prompts
+    use: [fewer-permission-prompts]
+  - intent: Audit/optimize Claude Code setup
+    use: [setup-audit:setup-audit]
+    alternates: [claude-code-setup:claude-automation-recommender]
+  - intent: Create or improve a CLAUDE.md
+    use: [init]
+    alternates: [claude-md-management:claude-md-improver, claude-md-management:revise-claude-md]
+  - intent: Create / edit / evaluate a skill
+    use: [skill-creator:skill-creator]
+    alternates: [superpowers:writing-skills, anthropic-skills:skill-creator, firecrawl:skill-gen]
+  - intent: User states a lasting preference or corrects how Claude works
+    use: [task-observer:task-observer]
+    alternates: [task-observer:learn, adaptive-agent:build-user-profile]
+  - intent: Set up persistent project memory
+    use: [claude-memory:structured-memory]
+    alternates: [productivity:memory-management, agent-memory:memory-search]
+  - intent: Recurring / polling task
+    use: [loop]
+  - intent: Hand off work to another session/agent
+    use: [zizi-skills:handoff]
+  - intent: Usage / cost / impact report of Claude Code
+    use: [session-report:session-report]
+    alternates: [receipts:receipts]
+  - intent: Customize Claude's UI (status line, panel, hook)
+    use: [plugin-authoring]
+  - intent: Find which skill fits
+    use: [zizi-skills:find-skills]
+    alternates: [agent-protocols:using-agent-skills]
+
+  # --- Research & web
+  - intent: Web search for current facts
+    use: [firecrawl:firecrawl-search]
+    alternates: [tavily:tavily-search, exa:search]
+  - intent: Scrape / crawl / map a site
+    use: [firecrawl:firecrawl-scrape]
+    alternates: [firecrawl:firecrawl-crawl, firecrawl:firecrawl-map, firecrawl:firecrawl-download, firecrawl:firecrawl-interact]
+  - intent: Deep multi-source research report
+    use: [anthropic-skills:deep-research]
+    alternates: [tavily:tavily-research, firecrawl:firecrawl-agent, exa:exa-agent, auto-research:auto-research, mattpocock-skills:research]
+  - intent: Academic papers (biomed / arXiv)
+    use: [firecrawl:firecrawl-research-index]
+  - intent: Scholarly project (humanities) end-to-end
+    use: [research-superpowers:using-research-powers]
+    then: [research-superpowers:brainstorming-research, research-superpowers:writing-research-plan, research-superpowers:literature-review, research-superpowers:acquire-sources, research-superpowers:ingest-source, research-superpowers:drafting-manuscript, research-superpowers:requesting-peer-review]
+  - intent: Grant / funding
+    use: [research-superpowers:grant-finder]
+    alternates: [zizi-skills:grant-writing]
+  - intent: Monitor a page/topic over time
+    use: [firecrawl:firecrawl-monitor]
+    alternates: [tavily:tavily-monitor]
+  - intent: Browser automation with interaction / login
+    use: [anthropic-skills:built-in-browser]
+    alternates: [anthropic-skills:chrome-browser, anthropic-skills:computer-use, agent-protocols:browser-testing-with-devtools]
+
+  # --- Documents & writing
+  - intent: Word .docx
+    use: [anthropic-skills:docx]
+  - intent: PDF read/create/fill/merge
+    use: [anthropic-skills:pdf]
+    alternates: [firecrawl:firecrawl-parse]
+  - intent: PowerPoint .pptx
+    use: [anthropic-skills:pptx]
+    alternates: [market-researcher:pptx-author]
+  - intent: Excel .xlsx
+    use: [anthropic-skills:xlsx]
+  - intent: Co-write a structured document
+    use: [anthropic-skills:doc-coauthoring]
+    alternates: [anthropic-skills:docs]
+  - intent: Google Docs/Sheets/Gmail/Calendar
+    use: [anthropic-skills:google-workspace]
+  - intent: Make AI-sounding text sound human
+    use: [humanizer:humanizer]
+    alternates: [humanize-kit:humanize, humanize-kit:humanize-ig, humanize-kit:voice-profiler]
+  - intent: Plain / professional writing style
+    use: [writing-skills:plain-language]
+    alternates: [writing-skills:business-writing, writing-skills:corporate-communication, writing-skills:orwells-rules, writing-skills:gov-uk-style, writing-skills:journalism-ap, writing-skills:asd-ste100, zizi-skills:plain-language]
+  - intent: Fun persona voice
+    use: [writing-skills:yoda]
+    alternates: [writing-skills:jack-sparrow, writing-skills:shrek, writing-skills:ted-lasso, writing-skills:paddington, writing-skills:winnie-the-pooh, writing-skills:bob-ross, writing-skills:scott-adams]
+  - intent: Terse output to save tokens
+    use: [caveman:caveman]
+  - intent: Writing prompts/docs for other agents
+    use: [mattpocock-skills:writing-for-agents]
+    alternates: [agent-protocols:context-engineering]
+  - intent: Status update / standup
+    use: [zizi-skills:status-update]
+
+  # --- Design & visuals
+  - intent: Any chart / plot / dashboard
+    use: [dataviz]
+    alternates: [data:create-viz, data:build-dashboard, data:data-visualization]
+  - intent: Artifact web page
+    use: [artifact-design]
+    alternates: [artifact-diagramming, artifact-capabilities]
+  - intent: UI/UX design work (non-code)
+    use: [design-superpowers:design]
+    alternates: [superdesign:superdesign, design-skills:design-critique, design-skills:design-elevation, design-superpowers:design-review]
+  - intent: Design system
+    use: [design-skills:design-systems]
+    alternates: [design-superpowers:ds-make, design-superpowers:ds-manage, design-superpowers:ds-consumer, design-superpowers:ds-producer]
+  - intent: Accessibility audit
+    use: [design-skills:accessibility-audit]
+  - intent: UX research / journeys / IA / copy
+    use: [design-skills:ux-research]
+    alternates: [design-skills:journey-mapping, zizi-skills:information-architecture, design-skills:ux-writing, design-skills:ux-strategy, design-skills:interaction-design]
+  - intent: Cinematic / animated marketing website
+    use: [animatedwebs:animatedwebs-site]
+    alternates: [animatedwebs:animatedwebs-hero, animatedwebs:animatedwebs-backgrounds, animatedwebs:animatedwebs-components, animatedwebs:animatedwebs-style]
+  - intent: Generate images
+    use: [image-generation:image-generation]
+    alternates: [zizi-skills:design-assets]
+  - intent: Figma
+    use: [design-superpowers:figma-setup]
+    alternates: [qt-development-skills:qt-figma-component-generation, qt-development-skills:qt-figma-token-extraction]
+
+  # --- Data & finance
+  - intent: SQL query writing
+    use: [data:write-query]
+    alternates: [data:sql-queries]
+  - intent: Explore / analyze / validate a dataset
+    use: [data:analyze]
+    alternates: [data:explore-data, data:statistical-analysis, data:validate-data, zizi-skills:data-analytics]
+  - intent: Accounting close / JE / recon / SOX
+    use: [finance:close-management]
+    alternates: [finance:journal-entry, finance:journal-entry-prep, finance:reconciliation, finance:sox-testing, finance:variance-analysis, finance:financial-statements, finance:audit-support]
+  - intent: Equity research note / earnings / thesis
+    use: [equity-research:earnings-analysis]
+    alternates: [equity-research:initiating-coverage, equity-research:thesis-tracker, equity-research:sector-overview, equity-research:idea-generation, equity-research:catalyst-calendar, lseg:equity-research, sp-global:tear-sheet]
+  - intent: Sector / competitive / comps research
+    use: [market-researcher:sector-overview]
+    alternates: [market-researcher:competitive-analysis, market-researcher:comps-analysis, market-researcher:idea-generation]
+  - intent: Rates / bonds / FX / options (LSEG data)
+    use: [lseg:macro-rates-monitor]
+    alternates: [lseg:bond-relative-value, lseg:bond-futures-basis, lseg:fx-carry-trade, lseg:option-vol-analysis, lseg:swap-curve-strategy, lseg:fixed-income-portfolio]
+
+  # --- Legal, productivity, media, career
+  - intent: AI governance / regulation / vendor AI review
+    use: [ai-governance-legal:use-case-triage]
+    alternates: [ai-governance-legal:reg-gap-analysis, ai-governance-legal:vendor-ai-review, ai-governance-legal:aia-generation, ai-governance-legal:ai-inventory, ai-governance-legal:policy-starter, ai-governance-legal:policy-monitor]
+  - intent: Task tracking / daily start
+    use: [productivity:task-management]
+    alternates: [productivity:start, productivity:update, zizi-skills:project-manager, anthropic-skills:morning]
+  - intent: Notion
+    use: [Notion:search]
+    alternates: [Notion:find, Notion:create-page, Notion:create-task, Notion:database-query]
+  - intent: Obsidian / personal knowledge base
+    use: [obsidian-notes:obsidian-notes]
+    alternates: [desktop-commander:obsidian-vault, desktop-commander:knowledge-base]
+  - intent: Clean up video/audio
+    use: [video-cleanup:video-cleanup]
+    alternates: [ffmpeg-llm:ffmpeg-command]
+  - intent: Understand a video / YouTube
+    use: [watch-video:watch-video]
+    alternates: [youtube-transcriber:youtube-transcriber]
+  - intent: Career move / LinkedIn profile
+    use: [rankedin:next-career-move]
+    alternates: [rankedin:profile-review, github-portfolio-builder:github-portfolio-builder]
+  - intent: Learning / tutoring
+    use: [ai-mentor:mentor]
+    alternates: [anthropic-skills:learn]
+  - intent: Startup go-to-market
+    use: [zizi-skills:first-customers]
+    alternates: [zizi-skills:marketing, zizi-skills:app-store]
+
+# ---------------------------------------------------------------------------
+# Overlap resolution (several plugins teach the same discipline)
+# ---------------------------------------------------------------------------
+overlaps:
+  tdd:            {primary: superpowers:test-driven-development, others: [agent-protocols:test-driven-development, mattpocock-skills:tdd, zizi-skills:tdd-skill]}
+  debugging:      {primary: superpowers:systematic-debugging, others: [mattpocock-skills:diagnosing-bugs, agent-protocols:debugging-and-error-recovery, zizi-skills:debugging-and-error-recovery]}
+  planning:       {primary: superpowers:writing-plans, others: [agent-protocols:planning-and-task-breakdown, zizi-skills:planning]}
+  ideation:       {primary: superpowers:brainstorming, others: [agent-protocols:idea-refine, zizi-skills:idea-refine, mattpocock-skills:grilling]}
+  code_review:    {primary: code-review, others: [code-review:code-review, agent-protocols:code-review-and-quality, mattpocock-skills:code-review, zizi-skills:adversarial-review]}
+  simplification: {primary: simplify, others: [agent-protocols:code-simplification, zizi-skills:code-quality]}
+  security:       {primary: agent-protocols:security-and-hardening, others: [zizi-skills:security-and-hardening, security-review]}
+  web_search:     {primary: firecrawl:firecrawl-search, others: [tavily:tavily-search, exa:search]}
+  deep_research:  {primary: anthropic-skills:deep-research, others: [tavily:tavily-research, firecrawl:firecrawl-agent, exa:exa-agent, auto-research:auto-research]}
+  humanize:       {primary: humanizer:humanizer, others: [humanize-kit:humanize]}
+  plain_language: {primary: writing-skills:plain-language, others: [zizi-skills:plain-language]}
+  skill_authoring: {primary: skill-creator:skill-creator, others: [superpowers:writing-skills, anthropic-skills:skill-creator]}
+  frontend:       {primary: frontend-design:frontend-design, others: [agent-protocols:frontend-ui-engineering, zizi-skills:frontend]}
+  memory:         {primary: claude-memory:structured-memory, others: [productivity:memory-management, agent-memory:memory-search]}
+  sector_report:  {primary: market-researcher:sector-overview, others: [equity-research:sector-overview]}
+
+# ---------------------------------------------------------------------------
+# MCP dependencies (status as of 2026-11-07 in the cloud sandbox)
+# connected: tool calls work; failed: proxy/auth error this session
+# ---------------------------------------------------------------------------
+mcp_dependencies:
+  connected: [Firecrawl, Figma, Claude_Docs, Google Drive (ai-governance-legal), playwright, browser-use, desktop-commander]
+  failed_this_session: [context7, exa, github, Notion, slack, asana, atlassian, clickup, linear, monday, amplitude, bigquery, definite, hex, lseg, spglobal, vanguard-advisors, cloudflare, animatedwebs, rankedin, resumenext-linkedin-resume, qt-docs, abracadabrax-image-video, agent-memory, cad-converter]
+  skills_needing_mcp:
+    lseg:*: lseg
+    sp-global:*: spglobal
+    vanguard-advisor-tools:*: vanguard-advisors
+    Notion:*: notion
+    animatedwebs:*: animatedwebs
+    rankedin:*: rankedin
+    "exa:*": "exa (fallback: firecrawl)"
+    agent-memory:memory-search: agent-memory
+    contentasoft-cad-converter:contenta-cad: cad-converter
+    "data:* (warehouse queries)": bigquery / snowflake / databricks / hex / amplitude
+    productivity:*: asana / linear / slack / notion / atlassian ...
+    finance:*: bigquery / snowflake / gmail / slack (optional)
+  note: Failures in the cloud sandbox are usually the network proxy (403) — allow the host in the environment or run locally.

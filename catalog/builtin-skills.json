@@ -1,0 +1,17 @@
+[
+ {"id":"dataviz","description":"Read BEFORE creating any chart, graph, plot, dashboard, stat tile or data visualization in any medium (HTML/React artifact, SVG, matplotlib/plotly/d3/Recharts, PNG). Form heuristic, color formula + validator, mark specs, interaction rules, validated default palette."},
+ {"id":"artifact-design","description":"Design guidance and page contract for Artifacts (title, libraries, theming tokens, dark mode, layout, size). Load before writing any artifact page."},
+ {"id":"artifact-diagramming","description":"When a diagram earns its place in an Artifact and how to draw legible inline-SVG diagrams that work in both themes."},
+ {"id":"artifact-capabilities","description":"Runtime capabilities for published Artifacts: live/connected data, shared state/db, viewer identity, ask-Claude, file storage, downloads, camera/mic/location. Load before passing `capabilities` or writing window.claude.* code."},
+ {"id":"update-config","description":"Configure the Claude Code harness via settings.json: hooks for automated behaviours ('whenever X', 'before/after X'), permissions, env vars, hook troubleshooting."},
+ {"id":"keybindings-help","description":"Customize keyboard shortcuts / chord bindings in ~/.claude/keybindings.json."},
+ {"id":"code-review","description":"Review the current diff or a PR/branch/path for correctness bugs at an effort level (low..max). --comment posts inline PR comments, --fix applies fixes, --max-findings N."},
+ {"id":"simplify","description":"Review changed code for reuse, simplification, efficiency and altitude cleanups, then apply fixes. Quality only — not a bug hunt."},
+ {"id":"fewer-permission-prompts","description":"Scan transcripts for common read-only Bash/MCP calls and add a prioritized allowlist to project .claude/settings.json."},
+ {"id":"loop","description":"Run a prompt or slash command on a recurring interval (/loop 5m /foo) or self-paced. Not for one-off tasks.","argument_hint":"[interval] <prompt>"},
+ {"id":"claude-api","description":"Reference for the Claude API / Anthropic SDK: model ids, pricing, params, streaming, tool use, MCP, agents, caching, token counting, migration. Trigger whenever Claude/Anthropic/LLM-shaped work is involved; never answer pricing/model questions from memory."},
+ {"id":"run","description":"Launch and drive this project's app to see a change working (CLI, server, TUI, Electron, browser, library); screenshot or confirm in the real app."},
+ {"id":"plugin-authoring","description":"Make or debug a 'mod': a change to Claude's own interface/behaviour — side panel, band, status line, toast, slash command, or tool-call hook."},
+ {"id":"init","description":"Initialize a CLAUDE.md for the current repository by analysing the codebase."},
+ {"id":"security-review","description":"Security review of the pending changes on the current branch."}
+]
