@@ -1,0 +1,36 @@
+# Plugin profile: synced claude.ai plugins to turn OFF at user scope.
+# Applied with `./install.sh plugins` (dry run) / `./install.sh plugins --apply`, which call the
+# official CLI: `claude plugin disable <name>@synced` -> writes "<name>@synced": false into
+# ~/.claude/settings.json enabledPlugins. Re-enable one for a single project by committing
+#   {"enabledPlugins": {"<name>@synced": true}}
+# to that project's .claude/settings.json.
+#
+# Why: every session lists every enabled skill. On 2026-11-07 that was 367 skills, ~30k chars
+# (measured), and the listing budget (1% of context) overflowed, so ~200 skills were shown
+# name-only. Fewer plugins = smaller baseline and full descriptions for the skills you keep.
+# skillOverrides does not apply to plugin skills, so disabling whole plugins is the lever.
+
+version: 1
+
+disable:
+  - name: zizi-skills
+    reason: "35 skills, largest listing contributor (~10%); disciplines duplicated by superpowers + agent-protocols"
+  - name: mattpocock-skills
+    reason: "11 enabled skills overlapping the superpowers/agent-protocols primaries"
+  - name: research-superpowers
+    reason: "17 skills + ~1.5k-token SessionStart skill index every session; enable per research project"
+  - name: contentasoft-cad-converter
+    reason: "MCP server launches Windows `cmd`; fails on macOS/Linux (ENOENT)"
+
+# Cannot be fixed with enabledPlugins: two synced plugins share each name, and
+# "<name>@synced": false would turn off both copies. Remove the extra copy on claude.ai.
+manual:
+  - name: humanizer
+    action: "Two plugins named 'humanizer' are synced. Keep one on claude.ai (Settings → Capabilities / plugins) and turn the other off."
+  - name: caveman
+    action: "Two plugins named 'caveman' are synced. Keep one on claude.ai and turn the other off."
+
+# Kept on purpose (noted so a later cleanup doesn't remove them)
+keep:
+  - name: flight-deck
+    reason: "Status band showing context fill and per-turn tokens; supports token-efficiency monitoring"

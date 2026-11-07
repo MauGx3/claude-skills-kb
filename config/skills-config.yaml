@@ -99,6 +99,7 @@ routing:
     alternates: [agent-protocols:git-workflow-and-versioning, zizi-skills:git-sync]
   - intent: Merge conflicts
     use: [mattpocock-skills:resolving-merge-conflicts]
+    alternates: [agent-protocols:git-workflow-and-versioning]
   - intent: API / interface / module boundary design
     use: [agent-protocols:api-and-interface-design]
     alternates: [mattpocock-skills:codebase-design, mattpocock-skills:domain-modeling, zizi-skills:service-architecture]
@@ -180,6 +181,7 @@ routing:
     use: [loop]
   - intent: Hand off work to another session/agent
     use: [zizi-skills:handoff]
+    profile_off_ok: true   # no equivalent; enable zizi-skills per project if needed
   - intent: Usage / cost / impact report of Claude Code
     use: [session-report:session-report]
     alternates: [receipts:receipts]
@@ -203,10 +205,12 @@ routing:
     use: [firecrawl:firecrawl-research-index]
   - intent: Scholarly project (humanities) end-to-end
     use: [research-superpowers:using-research-powers]
+    profile_off_ok: true   # research-superpowers is enabled per research project
     then: [research-superpowers:brainstorming-research, research-superpowers:writing-research-plan, research-superpowers:literature-review, research-superpowers:acquire-sources, research-superpowers:ingest-source, research-superpowers:drafting-manuscript, research-superpowers:requesting-peer-review]
   - intent: Grant / funding
     use: [research-superpowers:grant-finder]
     alternates: [zizi-skills:grant-writing]
+    profile_off_ok: true
   - intent: Monitor a page/topic over time
     use: [firecrawl:firecrawl-monitor]
     alternates: [tavily:tavily-monitor]
@@ -246,6 +250,7 @@ routing:
     alternates: [agent-protocols:context-engineering]
   - intent: Status update / standup
     use: [zizi-skills:status-update]
+    alternates: [writing-skills:business-writing]
 
   # --- Design & visuals
   - intent: Any chart / plot / dashboard
@@ -323,6 +328,7 @@ routing:
   - intent: Startup go-to-market
     use: [zizi-skills:first-customers]
     alternates: [zizi-skills:marketing, zizi-skills:app-store]
+    profile_off_ok: true
 
 # ---------------------------------------------------------------------------
 # Overlap resolution (several plugins teach the same discipline)

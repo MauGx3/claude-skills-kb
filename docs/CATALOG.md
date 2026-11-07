@@ -4,7 +4,7 @@ _Generated 2026-11-07T17:48:33+00:00 by `scripts/render_docs.py` — do not edit
 
 **75 plugins · 387 skills (323 enabled in Claude Code) · 49 slash commands · 27 subagents**
 
-Legend: ✅ invocable via `Skill` tool in Claude Code · ⬜ present on disk but not exposed (disabled, in-progress, or claude.ai-only library skill).
+Legend: ✅ invocable via `Skill` tool in Claude Code · ⏸ plugin turned off by `config/plugin-profile.yaml` (re-enable per project) · ⬜ present on disk but not exposed (disabled, in-progress, or claude.ai-only library skill).
 
 Invoke: `Skill(skill="<id>")` — or type `/<id>` as the user.
 
@@ -293,7 +293,7 @@ _Agent that simplifies and refines code for clarity, consistency, and maintainab
 
 - `code-simplifier:code-simplifier` — Simplifies and refines code for clarity, consistency, and maintainability while preserving all functionality. Focuses on recently modified code unless instructed otherwise.
 
-### mattpocock-skills `v1.2.3`
+### mattpocock-skills `v1.2.3` ⏸ off by plugin profile
 
 _Matt Pocock's agent skills for real engineering: grilling, spec/ticket flows, TDD, code review, domain modelling and more. Plug-and-play, not vibe coding._
 
@@ -301,17 +301,17 @@ Source: https://www.aihero.dev/s/skills-newsletter
 
 | Skill | | Description |
 |---|---|---|
-| `mattpocock-skills:code-review` | ✅ | Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating is… |
-| `mattpocock-skills:codebase-design` | ✅ | Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when a… |
-| `mattpocock-skills:diagnosing-bugs` | ✅ | Diagnosis loop for hard bugs and performance regressions. Use when the user says "diagnose"/"debug this", or reports something broken/throwing/failing/slow. |
-| `mattpocock-skills:domain-modeling` | ✅ | Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing a CONTEXT.md, or recording or editing an ADR. |
-| `mattpocock-skills:grilling` | ✅ | Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases. |
-| `mattpocock-skills:prototype` | ✅ | Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like. |
-| `mattpocock-skills:research` | ✅ | Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo. Use when the user wants a topic researched, docs or API facts gathered, or reading legwork delegated to … |
-| `mattpocock-skills:resolving-merge-conflicts` | ✅ | Use when you need to resolve an in-progress git merge/rebase conflict. |
-| `mattpocock-skills:tdd` | ✅ | Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions "red-green-refactor", or wants integration tests. |
-| `mattpocock-skills:wizard` | ✅ | Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or run… |
-| `mattpocock-skills:writing-for-agents` | ✅ | Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md. |
+| `mattpocock-skills:code-review` | ⏸ | Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating is… |
+| `mattpocock-skills:codebase-design` | ⏸ | Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when a… |
+| `mattpocock-skills:diagnosing-bugs` | ⏸ | Diagnosis loop for hard bugs and performance regressions. Use when the user says "diagnose"/"debug this", or reports something broken/throwing/failing/slow. |
+| `mattpocock-skills:domain-modeling` | ⏸ | Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing a CONTEXT.md, or recording or editing an ADR. |
+| `mattpocock-skills:grilling` | ⏸ | Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases. |
+| `mattpocock-skills:prototype` | ⏸ | Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like. |
+| `mattpocock-skills:research` | ⏸ | Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo. Use when the user wants a topic researched, docs or API facts gathered, or reading legwork delegated to … |
+| `mattpocock-skills:resolving-merge-conflicts` | ⏸ | Use when you need to resolve an in-progress git merge/rebase conflict. |
+| `mattpocock-skills:tdd` | ⏸ | Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions "red-green-refactor", or wants integration tests. |
+| `mattpocock-skills:wizard` | ⏸ | Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or run… |
+| `mattpocock-skills:writing-for-agents` | ⏸ | Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md. |
 | `mattpocock-skills:ask-matt` | ⬜ | Ask which skill or flow fits your situation. A router over the skills in this repo. |
 | `mattpocock-skills:claude-handoff` | ⬜ | Hand the current conversation off to a fresh background agent that picks up the work immediately. |
 | `mattpocock-skills:git-guardrails-claude-code` | ⬜ | Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git pu… |
@@ -349,7 +349,7 @@ _Keep your coding agent up to date with the latest web best practices_
 | `modern-web-guidance:chrome-extensions` | ✅ | Build and publish Chrome Extensions using Manifest V3 best practices. Use this skill whenever the user asks to create, modify, debug, or understand Chrome browser extensions, add-ons, or anything involving the Chrome Ex… |
 | `modern-web-guidance:modern-web-guidance` | ✅ | Search tool for modern web development best practices. MANDATORY: Execute FIRST for all HTML/CSS and clientside JS tasks. Do NOT skip — web APIs evolve rapidly and training weights contain obsolete patterns. Trigger imm… |
 
-### zizi-skills `v0.5.0`
+### zizi-skills `v0.5.0` ⏸ off by plugin profile
 
 _A skill library for disciplined software work: planning, test-first implementation, code and security review, git hygiene, and session handoff. Invoked as zizi-skills:<skill> once installed._
 
@@ -357,41 +357,41 @@ Source: https://github.com/ziazon/zizi-skills
 
 | Skill | | Description |
 |---|---|---|
-| `zizi-skills:adversarial-review` | ✅ | Run several independent model seats against one problem or one plan, make them attack each other, fact-check every contested claim, then ask the human one gate of questions. Two modes: a design panel for an open problem… |
-| `zizi-skills:app-store` | ✅ | App Store and Google Play listings: title, subtitle, keywords, description, screenshots, previews, ratings prompts. Use when preparing or auditing a store listing or asking why installs are low. Copy wording is plain-la… |
-| `zizi-skills:code-quality` | ✅ | Standards for reviewing and cleaning up code. Use when reviewing any diff (your own before commit, a Codex or sub-agent diff, a colleague's PR) or when asked to clean up, de-duplicate or delete dead code. Holds the hard… |
-| `zizi-skills:data-analytics` | ✅ | Decide which metrics, KPIs and charts an app's data deserves. Use when exploring a schema or domain, planning a dashboard ("what should this show?", "add stats to X"), or choosing which data points matter. Keeps a per-p… |
-| `zizi-skills:database-optimization` | ✅ | Correct, fast queries, views, indexes and schema. Use before adding or changing any query (ORM or raw), entity, migration, index or view, and when an endpoint or list is slow. In a TypeORM project, load it before writin… |
-| `zizi-skills:debugging-and-error-recovery` | ✅ | Root-cause debugging. Use when a test fails, a build breaks, behavior doesn't match expectations, or any unexpected error appears. Builds a loop that goes red on the failure before theorising, ranks falsifiable hypothes… |
-| `zizi-skills:deprecation-and-migration` | ✅ | Remove or replace systems, APIs and features. Use when sunsetting code, migrating users to a new implementation, running a strangler migration off a legacy service, or making an expand/contract schema change while old a… |
-| `zizi-skills:design-assets` | ✅ | Visual assets: logos, icons, illustrations, hero and OG images, empty-state art, favicons, raster-to-vector conversion. Use whenever a task needs one. Recraft is called first and hand-authoring is the fallback; covers t… |
-| `zizi-skills:design-guide` | ✅ | Visual and UX judgment: color, typography, spacing, hierarchy, themes. Use when choosing colors or status/badge colors, theming (white-label included), making a screen "look better" or more polished, or reviewing a UI's… |
-| `zizi-skills:done` | ✅ | Session close-out with no resume prompt. Use on /done, or when wrapping up a session where nothing remains to resume or the continuation prompt already exists (a standup queue's next item). Runs the handoff close-out mi… |
-| `zizi-skills:find-skills` | ✅ | Discover and install agent skills. Use only when the user explicitly asks for a skill ("find or install a skill for X", "is there a skill that..."), never for an ordinary how-do-I question. |
-| `zizi-skills:first-customers` | ✅ | Find and reach a product's first customers honestly: demand signals, local-business prospect lists, outreach drafts a human sends. Use when asking "who would buy this" or "how do I get my first users or clients". Offer … |
-| `zizi-skills:frontend` | ✅ | Frontend structure and behavior: components, state, a typed service layer, lists, tables and filters, forms, modals, loading/empty/error states, routing, SSR, web performance. Use when building or refactoring UI or addi… |
-| `zizi-skills:git-sync` | ✅ | The standing git workflow. Use at the start of any branch work and before every commit, push, rebase or PR: your own branch (never main), rebased on current main, every branch pushed, PR bodies in the standard shape, PR… |
-| `zizi-skills:grant-writing` | ✅ | Research grant applications: research and mentoring plans, specific aims, budget justifications, abstracts. Use when writing or strengthening a proposal, checking a draft against a funder's guidelines or review criteria… |
-| `zizi-skills:handoff` | ✅ | Durable session handoff with a resume prompt. Use when pausing or ending work at a real boundary (a phase or PR done, a blocker, a pivot, a drained queue) or when the user says "hand off" or "we'll continue later". Save… |
-| `zizi-skills:i18n` | ✅ | Multi-language support (i18n/l10n). Use when a task touches a translation file or a user-facing string in a product that ships more than one language: adding a language or key, extracting strings, vue-i18n/nestjs-i18n/g… |
-| `zizi-skills:idea-refine` | ✅ | Turn a vague idea into a sharp, actionable concept by diverging, then converging. Use for pure ideation: "ideate", "refine this idea", "explore options for X". It sits upstream of a plan; to plan an idea already chosen,… |
-| `zizi-skills:information-architecture` | ✅ | How content and pages are organized for their audience: site maps, page inventories, each page's job, where a message or feature lives, navigation and funnels, heading structure, buried or orphaned messages. Applies to … |
-| `zizi-skills:infrastructure` | ✅ | Change infrastructure and dev-workflow tooling: Nomad, Consul, Vault, Terraform, Docker, GitHub Actions, task runners, env and direnv setup, setup scripts, a project's own ops CLI, launchd and hooks. Use when editing an… |
-| `zizi-skills:integrations` | ✅ | Connect to or automate third-party services: REST APIs, MCP servers, OAuth and tokens, webhooks, recurring syncs. Use when building or debugging an integration, scheduling a job against an external service, deciding whe… |
-| `zizi-skills:marketing` | ✅ | Why people choose, buy, sign up and stay, applied honestly: behavioral models, offers, pricing, trust, urgency, onboarding and growth loops for the apps and sites we build. Use when shaping a landing, pricing, signup or… |
-| `zizi-skills:monitoring` | ✅ | Observability into running code. Use when adding logging or instrumentation, diagnosing a running service ("watch the logs", "what is it actually doing"), standardizing log output, or when a change must be proven on the… |
-| `zizi-skills:orchestration` | ✅ | Run multi-step or long-running work as an orchestrator over disposable sub-agents. Use at the start of a program phase, migration, broad sweep, deep research or many-file job, or when your context fills with exploration… |
-| `zizi-skills:plain-language` | ✅ | Clear, friendly, jargon-free writing for non-technical readers: ticket text, QA steps, release notes, status updates, UI copy, business messages. Use when writing for QA, product, stakeholders or end users, or on a "mak… |
-| `zizi-skills:planning` | ✅ | Plan before building anything non-trivial: multi-file or multi-phase work, a feature, a migration, or whenever asked to plan. Research, write the plan, ask every decision up front (a second gate only for questions that … |
-| `zizi-skills:project-config` | ✅ | The recorded facts of how each project runs: node version, env and direnv, package manager, monorepo layout, and the exact install, run, build, test, lint and migrate commands. Consult before your first shell command in… |
-| `zizi-skills:project-manager` | ✅ | Keep the tracker (Jira, Trello, or GitHub Issues and Projects) in sync with the real work. Use on /project-manager or "file a ticket", "is this tracked", "write QA steps", "audit my tickets", "find duplicates", "clean u… |
-| `zizi-skills:research-methods` | ✅ | Social and health research design: conceptual and logic models, CBPR/YPAR, participatory and agent-based modeling, spatial indices, implementation frameworks (CFIR, RE-AIM), measures, IRB and human-subjects sections, li… |
-| `zizi-skills:security-and-hardening` | ✅ | Security standards a default pass gets wrong: credential reach, proving a control holds, leak-free secret scanning, SSRF/TOCTOU, deployment topology. Use when handling untrusted input, auth, sessions, stored data or thi… |
-| `zizi-skills:service-architecture` | ✅ | Backend architecture decisions: service boundaries, splitting vs consolidating, inter-service calls, auth guards and tiers, where logic lives, strangler migrations. Load before adding or versioning an endpoint or a serv… |
-| `zizi-skills:source-driven-development` | ✅ | Ground implementation decisions in official documentation, with citations. Use when building with a framework or library where correctness matters or common patterns may be outdated. |
-| `zizi-skills:status-update` | ✅ | Session status as a visual dashboard plus a 2-3 line TLDR, never prose alone. Use on /status-update, "where are we", "what's left", mid-way through a multi-item run, and at any wrap-up covering more than one unit of wor… |
-| `zizi-skills:tabler-ui` | ✅ | Tabler admin template (tabler.io) components and the workarounds that make them behave in Vue 3. Consult before any Tabler markup or interactive component: modals, dropdowns, badges, grids, forms, icons, wizards, empty … |
-| `zizi-skills:tdd-skill` | ✅ | Test-first (red-green-refactor) for any codebase. Use when adding or changing behavior, fixing a bug (it starts with a failing regression test), or asked to add or cover tests. Finds how this project runs tests, names t… |
+| `zizi-skills:adversarial-review` | ⏸ | Run several independent model seats against one problem or one plan, make them attack each other, fact-check every contested claim, then ask the human one gate of questions. Two modes: a design panel for an open problem… |
+| `zizi-skills:app-store` | ⏸ | App Store and Google Play listings: title, subtitle, keywords, description, screenshots, previews, ratings prompts. Use when preparing or auditing a store listing or asking why installs are low. Copy wording is plain-la… |
+| `zizi-skills:code-quality` | ⏸ | Standards for reviewing and cleaning up code. Use when reviewing any diff (your own before commit, a Codex or sub-agent diff, a colleague's PR) or when asked to clean up, de-duplicate or delete dead code. Holds the hard… |
+| `zizi-skills:data-analytics` | ⏸ | Decide which metrics, KPIs and charts an app's data deserves. Use when exploring a schema or domain, planning a dashboard ("what should this show?", "add stats to X"), or choosing which data points matter. Keeps a per-p… |
+| `zizi-skills:database-optimization` | ⏸ | Correct, fast queries, views, indexes and schema. Use before adding or changing any query (ORM or raw), entity, migration, index or view, and when an endpoint or list is slow. In a TypeORM project, load it before writin… |
+| `zizi-skills:debugging-and-error-recovery` | ⏸ | Root-cause debugging. Use when a test fails, a build breaks, behavior doesn't match expectations, or any unexpected error appears. Builds a loop that goes red on the failure before theorising, ranks falsifiable hypothes… |
+| `zizi-skills:deprecation-and-migration` | ⏸ | Remove or replace systems, APIs and features. Use when sunsetting code, migrating users to a new implementation, running a strangler migration off a legacy service, or making an expand/contract schema change while old a… |
+| `zizi-skills:design-assets` | ⏸ | Visual assets: logos, icons, illustrations, hero and OG images, empty-state art, favicons, raster-to-vector conversion. Use whenever a task needs one. Recraft is called first and hand-authoring is the fallback; covers t… |
+| `zizi-skills:design-guide` | ⏸ | Visual and UX judgment: color, typography, spacing, hierarchy, themes. Use when choosing colors or status/badge colors, theming (white-label included), making a screen "look better" or more polished, or reviewing a UI's… |
+| `zizi-skills:done` | ⏸ | Session close-out with no resume prompt. Use on /done, or when wrapping up a session where nothing remains to resume or the continuation prompt already exists (a standup queue's next item). Runs the handoff close-out mi… |
+| `zizi-skills:find-skills` | ⏸ | Discover and install agent skills. Use only when the user explicitly asks for a skill ("find or install a skill for X", "is there a skill that..."), never for an ordinary how-do-I question. |
+| `zizi-skills:first-customers` | ⏸ | Find and reach a product's first customers honestly: demand signals, local-business prospect lists, outreach drafts a human sends. Use when asking "who would buy this" or "how do I get my first users or clients". Offer … |
+| `zizi-skills:frontend` | ⏸ | Frontend structure and behavior: components, state, a typed service layer, lists, tables and filters, forms, modals, loading/empty/error states, routing, SSR, web performance. Use when building or refactoring UI or addi… |
+| `zizi-skills:git-sync` | ⏸ | The standing git workflow. Use at the start of any branch work and before every commit, push, rebase or PR: your own branch (never main), rebased on current main, every branch pushed, PR bodies in the standard shape, PR… |
+| `zizi-skills:grant-writing` | ⏸ | Research grant applications: research and mentoring plans, specific aims, budget justifications, abstracts. Use when writing or strengthening a proposal, checking a draft against a funder's guidelines or review criteria… |
+| `zizi-skills:handoff` | ⏸ | Durable session handoff with a resume prompt. Use when pausing or ending work at a real boundary (a phase or PR done, a blocker, a pivot, a drained queue) or when the user says "hand off" or "we'll continue later". Save… |
+| `zizi-skills:i18n` | ⏸ | Multi-language support (i18n/l10n). Use when a task touches a translation file or a user-facing string in a product that ships more than one language: adding a language or key, extracting strings, vue-i18n/nestjs-i18n/g… |
+| `zizi-skills:idea-refine` | ⏸ | Turn a vague idea into a sharp, actionable concept by diverging, then converging. Use for pure ideation: "ideate", "refine this idea", "explore options for X". It sits upstream of a plan; to plan an idea already chosen,… |
+| `zizi-skills:information-architecture` | ⏸ | How content and pages are organized for their audience: site maps, page inventories, each page's job, where a message or feature lives, navigation and funnels, heading structure, buried or orphaned messages. Applies to … |
+| `zizi-skills:infrastructure` | ⏸ | Change infrastructure and dev-workflow tooling: Nomad, Consul, Vault, Terraform, Docker, GitHub Actions, task runners, env and direnv setup, setup scripts, a project's own ops CLI, launchd and hooks. Use when editing an… |
+| `zizi-skills:integrations` | ⏸ | Connect to or automate third-party services: REST APIs, MCP servers, OAuth and tokens, webhooks, recurring syncs. Use when building or debugging an integration, scheduling a job against an external service, deciding whe… |
+| `zizi-skills:marketing` | ⏸ | Why people choose, buy, sign up and stay, applied honestly: behavioral models, offers, pricing, trust, urgency, onboarding and growth loops for the apps and sites we build. Use when shaping a landing, pricing, signup or… |
+| `zizi-skills:monitoring` | ⏸ | Observability into running code. Use when adding logging or instrumentation, diagnosing a running service ("watch the logs", "what is it actually doing"), standardizing log output, or when a change must be proven on the… |
+| `zizi-skills:orchestration` | ⏸ | Run multi-step or long-running work as an orchestrator over disposable sub-agents. Use at the start of a program phase, migration, broad sweep, deep research or many-file job, or when your context fills with exploration… |
+| `zizi-skills:plain-language` | ⏸ | Clear, friendly, jargon-free writing for non-technical readers: ticket text, QA steps, release notes, status updates, UI copy, business messages. Use when writing for QA, product, stakeholders or end users, or on a "mak… |
+| `zizi-skills:planning` | ⏸ | Plan before building anything non-trivial: multi-file or multi-phase work, a feature, a migration, or whenever asked to plan. Research, write the plan, ask every decision up front (a second gate only for questions that … |
+| `zizi-skills:project-config` | ⏸ | The recorded facts of how each project runs: node version, env and direnv, package manager, monorepo layout, and the exact install, run, build, test, lint and migrate commands. Consult before your first shell command in… |
+| `zizi-skills:project-manager` | ⏸ | Keep the tracker (Jira, Trello, or GitHub Issues and Projects) in sync with the real work. Use on /project-manager or "file a ticket", "is this tracked", "write QA steps", "audit my tickets", "find duplicates", "clean u… |
+| `zizi-skills:research-methods` | ⏸ | Social and health research design: conceptual and logic models, CBPR/YPAR, participatory and agent-based modeling, spatial indices, implementation frameworks (CFIR, RE-AIM), measures, IRB and human-subjects sections, li… |
+| `zizi-skills:security-and-hardening` | ⏸ | Security standards a default pass gets wrong: credential reach, proving a control holds, leak-free secret scanning, SSRF/TOCTOU, deployment topology. Use when handling untrusted input, auth, sessions, stored data or thi… |
+| `zizi-skills:service-architecture` | ⏸ | Backend architecture decisions: service boundaries, splitting vs consolidating, inter-service calls, auth guards and tiers, where logic lives, strangler migrations. Load before adding or versioning an endpoint or a serv… |
+| `zizi-skills:source-driven-development` | ⏸ | Ground implementation decisions in official documentation, with citations. Use when building with a framework or library where correctness matters or common patterns may be outdated. |
+| `zizi-skills:status-update` | ⏸ | Session status as a visual dashboard plus a 2-3 line TLDR, never prose alone. Use on /status-update, "where are we", "what's left", mid-way through a multi-item run, and at any wrap-up covering more than one unit of wor… |
+| `zizi-skills:tabler-ui` | ⏸ | Tabler admin template (tabler.io) components and the workarounds that make them behave in Vue 3. Consult before any Tabler markup or interactive component: modals, dropdowns, badges, grids, forms, icons, wizards, empty … |
+| `zizi-skills:tdd-skill` | ⏸ | Test-first (red-green-refactor) for any codebase. Use when adding or changing behavior, fixing a bug (it starts with a failing regression test), or asked to add or cover tests. Finds how this project runs tests, names t… |
 | `zizi-skills:explain` | ⬜ | Re-explain the last message in plain words, using the project's own vocabulary. |
 
 ## Language / platform specific
@@ -419,7 +419,7 @@ MCP: `cloudflare`
 | `cloudflare:workers-best-practices` | ✅ | Cloudflare Workers best practices for production applications. Use when writing, reviewing, or configuring Workers. |
 | `cloudflare:wrangler` | ✅ | Run or troubleshoot Wrangler CLI commands and configure Worker projects for local development, deployment, and Cloudflare resource management. |
 
-### contentasoft-cad-converter `v1.0.3`
+### contentasoft-cad-converter `v1.0.3` ⏸ off by plugin profile
 
 _3D CAD Converter on your Windows PC from your AI agent: converting STEP, IGES, STL, OBJ, FBX, glTF, 3MF and other 3D/CAD files. Runs locally on your files._
 
@@ -427,7 +427,7 @@ Source: https://www.contenta-software.com/3dcadconverter/ · MCP: `cad-converter
 
 | Skill | | Description |
 |---|---|---|
-| `contentasoft-cad-converter:contenta-cad` | ✅ | Convert 3D CAD and mesh files with the 3D CAD Converter CLI (cadconvert). Use when the user asks to convert STEP, IGES or BREP to STL, OBJ, 3MF, glTF/GLB, FBX, PLY or other formats, convert between mesh formats (includi… |
+| `contentasoft-cad-converter:contenta-cad` | ⏸ | Convert 3D CAD and mesh files with the 3D CAD Converter CLI (cadconvert). Use when the user asks to convert STEP, IGES or BREP to STL, OBJ, 3MF, glTF/GLB, FBX, PLY or other formats, convert between mesh formats (includi… |
 
 ### github
 
@@ -637,7 +637,7 @@ Source: https://docs.tavily.com
 
 ## Academic research & writing
 
-### research-superpowers `v0.41.1`
+### research-superpowers `v0.41.1` ⏸ off by plugin profile
 
 _Skill-driven research workflow for Claude Code and Cowork: idea → literature → ingest → analysis → draft → peer-review → publication. Methodology-aware (hermeneutic / quantitative / mixed). Focus-driven ingest: source pages capture project-specific extraction (claims relevant to a research focus), not generic summaries. MCP-aware: optional dao-paper-search-mcp + dao-searxng-mcp integration for ve…_
 
@@ -645,23 +645,23 @@ Source: https://github.com/leiverkus/research-superpowers · Has hooks
 
 | Skill | | Description |
 |---|---|---|
-| `research-superpowers:acquire-sources` | ✅ | Use AFTER literature-review and BEFORE ingest-source to obtain the actual PDFs for the A+B graded sources. Auto-downloads Open-Access PDFs into the shared library (<library>/pdf/<bibkey>.pdf — the bibkey IS the filename… |
-| `research-superpowers:add-to-library` | ✅ | Add ONE document (a PDF) directly to the shared master library — outside the project ingest flow. Auto-discovers the bibliographic metadata, VERIFIES it against Crossref/OpenAlex (never guessing), derives keywords cheap… |
-| `research-superpowers:brainstorming-research` | ✅ | Use BEFORE any research work — defining a question, planning a study, starting a chapter, proposing a grant. Explores intent, state of the field, methodology, feasibility, and ethics, then writes a design doc and gets u… |
-| `research-superpowers:drafting-manuscript` | ✅ | Use to draft a book chapter, article section, or grant exposé from synthesized wiki content. Settles the argument architecture with the user first, then drafts section by section — each section's argument agreed before … |
-| `research-superpowers:drift-report` | ✅ | Use to check the shared library, the current wiki, and all registered projects for accumulated drift — un-indexed PDFs, scans without a text layer, PDF bloat, project-bib keywords not yet merged into the master, cross-p… |
-| `research-superpowers:executing-research-plan` | ✅ | Use AFTER writing-research-plan has produced a ready plan (status=ready for hermeneutic projects, status=pre-registered for quantitative/mixed). Reads `input/ideas/<slug>-plan.md`, creates TodoWrite items, runs a pre-in… |
-| `research-superpowers:finishing-a-research-project` | ✅ | Use when a research project reaches completion — manuscript finalized, peer-review cleared, ready for publication / submission / archive. Runs the final checklist across rendering, BibTeX, wiki, data, reproducibility, a… |
-| `research-superpowers:grant-finder` | ✅ | Use for researching German and European funding programs (DFG, ERC, VolkswagenStiftung, Gerda Henkel, Fritz Thyssen, bilateral DE-IL) for projects in theology, biblical archaeology, digital humanities. Produces a DFG-st… |
-| `research-superpowers:ingest-source` | ✅ | Use when adding a scholarly source (PDF, book chapter, article) to the research project wiki under a specific focus. Produces a focus-driven Source page (claims relevant to the project, not a generic summary), extracts … |
-| `research-superpowers:literature-review` | ✅ | Systematic literature search for theology, biblical archaeology, ancient history, and digital humanities. Triggers on "literature review on X", "Stand der Forschung zu X", "Literaturrecherche zu X". NOT for single-paper… |
-| `research-superpowers:requesting-peer-review` | ✅ | Use when a manuscript (book chapter, article, grant) is drafted and ready for structured review. Runs a two-stage peer-review workflow — constructive then adversarial — with discipline-specific checklists (CONSORT/STROB… |
-| `research-superpowers:scaffold-research-project` | ✅ | Use to create a new research project from the template via conversation — no terminal, no `cp` commands. Asks for project name, parent directory, methodology, discipline, and languages; copies the template tree using th… |
-| `research-superpowers:semantic-wiki-review` | ✅ | Use when the user asks for a *content* review of the wiki — contradictions between pages, outdated claims overtaken by newer sources, weakly supported assertions, missing cross-references that the structural linter cann… |
-| `research-superpowers:using-research-powers` | ✅ | Use when starting any research conversation — establishes how to find and use research skills. Requires Skill tool invocation before ANY response, including clarifying questions. Governs the full research workflow from … |
-| `research-superpowers:wiki-graph` | ✅ | Use to build and analyse the knowledge wiki as a graph. Runs `scripts/wiki-to-graph.py` (from the research project template) to export an interactive self-contained graph.html (open in any browser, no install) plus grap… |
-| `research-superpowers:wiki-lint` | ✅ | Use to validate the knowledge wiki — frontmatter completeness, broken wikilinks, orphaned pages, status consistency. Wraps `scripts/lint-wiki.py` from the research project template. Required before drafting and before f… |
-| `research-superpowers:writing-research-plan` | ✅ | Use AFTER brainstorming-research has produced an approved design doc. Converts the design into a pre-registered research plan with falsifiable hypothesis, concrete task list, and verification criteria. No execution happ… |
+| `research-superpowers:acquire-sources` | ⏸ | Use AFTER literature-review and BEFORE ingest-source to obtain the actual PDFs for the A+B graded sources. Auto-downloads Open-Access PDFs into the shared library (<library>/pdf/<bibkey>.pdf — the bibkey IS the filename… |
+| `research-superpowers:add-to-library` | ⏸ | Add ONE document (a PDF) directly to the shared master library — outside the project ingest flow. Auto-discovers the bibliographic metadata, VERIFIES it against Crossref/OpenAlex (never guessing), derives keywords cheap… |
+| `research-superpowers:brainstorming-research` | ⏸ | Use BEFORE any research work — defining a question, planning a study, starting a chapter, proposing a grant. Explores intent, state of the field, methodology, feasibility, and ethics, then writes a design doc and gets u… |
+| `research-superpowers:drafting-manuscript` | ⏸ | Use to draft a book chapter, article section, or grant exposé from synthesized wiki content. Settles the argument architecture with the user first, then drafts section by section — each section's argument agreed before … |
+| `research-superpowers:drift-report` | ⏸ | Use to check the shared library, the current wiki, and all registered projects for accumulated drift — un-indexed PDFs, scans without a text layer, PDF bloat, project-bib keywords not yet merged into the master, cross-p… |
+| `research-superpowers:executing-research-plan` | ⏸ | Use AFTER writing-research-plan has produced a ready plan (status=ready for hermeneutic projects, status=pre-registered for quantitative/mixed). Reads `input/ideas/<slug>-plan.md`, creates TodoWrite items, runs a pre-in… |
+| `research-superpowers:finishing-a-research-project` | ⏸ | Use when a research project reaches completion — manuscript finalized, peer-review cleared, ready for publication / submission / archive. Runs the final checklist across rendering, BibTeX, wiki, data, reproducibility, a… |
+| `research-superpowers:grant-finder` | ⏸ | Use for researching German and European funding programs (DFG, ERC, VolkswagenStiftung, Gerda Henkel, Fritz Thyssen, bilateral DE-IL) for projects in theology, biblical archaeology, digital humanities. Produces a DFG-st… |
+| `research-superpowers:ingest-source` | ⏸ | Use when adding a scholarly source (PDF, book chapter, article) to the research project wiki under a specific focus. Produces a focus-driven Source page (claims relevant to the project, not a generic summary), extracts … |
+| `research-superpowers:literature-review` | ⏸ | Systematic literature search for theology, biblical archaeology, ancient history, and digital humanities. Triggers on "literature review on X", "Stand der Forschung zu X", "Literaturrecherche zu X". NOT for single-paper… |
+| `research-superpowers:requesting-peer-review` | ⏸ | Use when a manuscript (book chapter, article, grant) is drafted and ready for structured review. Runs a two-stage peer-review workflow — constructive then adversarial — with discipline-specific checklists (CONSORT/STROB… |
+| `research-superpowers:scaffold-research-project` | ⏸ | Use to create a new research project from the template via conversation — no terminal, no `cp` commands. Asks for project name, parent directory, methodology, discipline, and languages; copies the template tree using th… |
+| `research-superpowers:semantic-wiki-review` | ⏸ | Use when the user asks for a *content* review of the wiki — contradictions between pages, outdated claims overtaken by newer sources, weakly supported assertions, missing cross-references that the structural linter cann… |
+| `research-superpowers:using-research-powers` | ⏸ | Use when starting any research conversation — establishes how to find and use research skills. Requires Skill tool invocation before ANY response, including clarifying questions. Governs the full research workflow from … |
+| `research-superpowers:wiki-graph` | ⏸ | Use to build and analyse the knowledge wiki as a graph. Runs `scripts/wiki-to-graph.py` (from the research project template) to export an interactive self-contained graph.html (open in any browser, no install) plus grap… |
+| `research-superpowers:wiki-lint` | ⏸ | Use to validate the knowledge wiki — frontmatter completeness, broken wikilinks, orphaned pages, status consistency. Wraps `scripts/lint-wiki.py` from the research project template. Required before drafting and before f… |
+| `research-superpowers:writing-research-plan` | ⏸ | Use AFTER brainstorming-research has produced an approved design doc. Converts the design into a pre-registered research plan with falsifiable hypothesis, concrete task list, and verification criteria. No execution happ… |
 
 **Subagents** (`Agent(subagent_type=…)`):
 
