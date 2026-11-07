@@ -19,12 +19,18 @@ PY
   echo "merged skills guide into $t"
 }
 
+point_router() {  # point_router <SKILL.md>: rewrite ../../ to the KB path (portable; no sed -i)
+  python3 - "$1" "$KB/" <<'PY'
+import sys; f,kb=sys.argv[1:]; s=open(f).read(); open(f,"w").write(s.replace("../../",kb))
+PY
+}
+
 case "$MODE" in
   user)
     merge_md "$HOME/.claude/CLAUDE.md"
     mkdir -p "$HOME/.claude/skills"
     rm -rf "$HOME/.claude/skills/skill-router"; cp -r "$KB/skills/skill-router" "$HOME/.claude/skills/"
-    sed -i "s#\.\./\.\./#$KB/#g" "$HOME/.claude/skills/skill-router/SKILL.md"
+    point_router "$HOME/.claude/skills/skill-router/SKILL.md"
     echo "installed skill-router -> ~/.claude/skills/skill-router (points at $KB)"
     ;;
   project)
@@ -32,7 +38,7 @@ case "$MODE" in
     merge_md "$P/CLAUDE.md"
     mkdir -p "$P/.claude/skills"; rm -rf "$P/.claude/skills/skill-router"
     cp -r "$KB/skills/skill-router" "$P/.claude/skills/"
-    sed -i "s#\.\./\.\./#$KB/#g" "$P/.claude/skills/skill-router/SKILL.md"
+    point_router "$P/.claude/skills/skill-router/SKILL.md"
     ENC="$(echo "$P" | sed 's#[/.]#-#g')"; MEM="$HOME/.claude/projects/$ENC/memory"
     mkdir -p "$MEM"; for f in "$KB"/memory/*.md; do b=$(basename "$f"); [ "$b" = MEMORY.md ] && continue; cp "$f" "$MEM/"; done
     if [ -f "$MEM/MEMORY.md" ] && ! grep -q skills-inventory "$MEM/MEMORY.md"; then
