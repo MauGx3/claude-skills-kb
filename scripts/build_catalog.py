@@ -6,9 +6,12 @@ Re-run any time plugins change:  python3 scripts/build_catalog.py
 import json, os, re, glob, sys, datetime
 import yaml
 
+HOME_CLAUDE = os.path.expanduser("~/.claude")
+# Cloud sessions keep plugins in plugins/synced; local installs (macOS/Linux) in plugins/cache.
+_plugin_dirs = [d for d in (f"{HOME_CLAUDE}/plugins/synced", f"{HOME_CLAUDE}/plugins/cache") if os.path.isdir(d)]
 ROOTS = {
-    "plugins": "/root/.claude/plugins/synced",
-    "user_skills": "/root/.claude/skills",
+    "plugins": os.environ.get("CLAUDE_PLUGINS_DIR") or (_plugin_dirs[0] if _plugin_dirs else f"{HOME_CLAUDE}/plugins"),
+    "user_skills": f"{HOME_CLAUDE}/skills",
     "anthropic_public": "/mnt/skills/public",
     "anthropic_examples": "/mnt/skills/examples",
 }
