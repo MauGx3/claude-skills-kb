@@ -156,4 +156,73 @@ open(f"{B}/AGENTS.md", "w").write(
     "<!-- Generated from CLAUDE.md by scripts/render_docs.py. Edit CLAUDE.md instead. -->\n"
     "# AGENTS.md\n\nSkills routing guide for any agent. In claude.ai, paste into Project instructions.\n\n"
     + claude_md.split("\n", 1)[1].lstrip())
-print("ok", len(cfg["routing"]), "routes,", len(L), "catalog lines,", len(claude_md), "chars CLAUDE.md")
+# ---- Claude desktop app (Chat / Cowork tabs)
+# Chat has no Claude Code built-ins and no local plugin profile (that lives in ~/.claude), so it
+# gets its own availability rule and its own routing table, packaged as an uploadable skill.
+import io, zipfile
+
+def chat_available(i):
+    rec = skills.get(i)
+    return bool(rec) and rec.get("enabled") and rec.get("source") != "builtin"
+
+DESKTOP_BUDGET = 2500  # chars; pasted into Settings → Your Claude → Instructions
+desk = open(f"{B}/desktop/instructions.md").read()
+dbad = []
+if len(desk) > DESKTOP_BUDGET:
+    dbad.append(f"desktop/instructions.md: {len(desk)} chars > budget {DESKTOP_BUDGET}")
+for i in re.findall(r"`([\w-]+:[\w-]+)`", desk):
+    if not chat_available(i): dbad.append(f"desktop/instructions.md: {i} not available in chat")
+if dbad:
+    print("INVALID DESKTOP:"); [print("  ", b) for b in dbad]; sys.exit(1)
+
+rows, skipped = [], []
+for r in cfg["routing"]:
+    cands = [i for i in (r.get("use", []) + (r.get("alternates") or [])) if chat_available(i)]
+    if not cands:
+        skipped.append(r["intent"]); continue
+    rest = [f"`{x}`" for x in cands[1:4]]
+    rows.append(f"| {esc(r['intent'])} | `{cands[0]}` | {', '.join(rest) or '—'} |")
+chat_routing = "\n".join([
+    "# Skill routing for Claude chat and Cowork", "",
+    f"_Generated {cat['generated_at']} by `scripts/render_docs.py` from `config/skills-config.yaml`._", "",
+    "Use the **Use** skill first. Use an alternate only when the person names it or the first doesn't fit.",
+    "Skills are listed only if they are available in chat; Claude Code-only tools are left out.", "",
+    "| When the task is… | Use | Alternates |", "|---|---|---|", *rows, "",
+    "## Overlaps", "", "When several skills teach the same thing, use the primary:", "",
+    *[f"- {k.replace('_', ' ')}: `{o['primary']}`" for k, o in cfg["overlaps"].items() if chat_available(o["primary"])],
+    "",
+    f"_Left out (Claude Code only): {', '.join(skipped)}._" if skipped else "", ""])
+chat_skill = """---
+name: skill-router
+description: Pick the right installed skill when unsure which one fits a task, when several skills overlap, or when asked which skills exist for a topic. Reads the bundled routing table.
+---
+
+# Skill Router
+
+1. Open `ROUTING.md` in this skill and find the task under "When the task is…".
+2. Use the skill in the **Use** column. If it isn't available or its connector isn't connected, say so and use the first alternate.
+3. When skills overlap, use the primary listed under "Overlaps".
+4. Say which skill you used and why, in one line.
+
+If nothing matches, use your general judgment and say that no skill matched.
+"""
+os.makedirs(f"{B}/desktop/skill-router", exist_ok=True)
+open(f"{B}/desktop/skill-router/SKILL.md", "w").write(chat_skill)
+open(f"{B}/desktop/skill-router/ROUTING.md", "w").write(chat_routing)
+
+# Deterministic zip so CI can check it is current: fixed timestamps and permissions, and
+# ZIP_STORED, because deflate output can differ between zlib builds (macOS vs Linux).
+buf = io.BytesIO()
+with zipfile.ZipFile(buf, "w", zipfile.ZIP_STORED) as z:
+    for name in ("SKILL.md", "ROUTING.md"):
+        zi = zipfile.ZipInfo(f"skill-router/{name}", date_time=(2026, 1, 1, 0, 0, 0))
+        zi.external_attr = 0o644 << 16
+        zi.compress_type = zipfile.ZIP_STORED
+        z.writestr(zi, open(f"{B}/desktop/skill-router/{name}").read())
+data = buf.getvalue()
+zpath = f"{B}/desktop/skill-router.zip"
+if not os.path.exists(zpath) or open(zpath, "rb").read() != data:
+    open(zpath, "wb").write(data)
+
+print("ok", len(cfg["routing"]), "routes,", len(L), "catalog lines,", len(claude_md), "chars CLAUDE.md,",
+      len(rows), "chat routes,", len(desk), "chars desktop instructions")

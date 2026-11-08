@@ -26,6 +26,8 @@ written so agents in **Claude Code** and **claude.ai** pick the right skill on t
 | `scripts/plugin_profile.py` | Applies the profile with `claude plugin disable` (dry run by default) | Setup |
 | `tests/` | Installer, renderer, profile and search tests (`python3 -m unittest discover -s tests`) | Maintenance |
 | `install.sh` | Installs into `~/.claude` or a project; `plugins` mode applies the profile | Setup |
+| `desktop/instructions.md` | Instructions for the desktop app's Chat/Cowork tabs (edit by hand) | Claude desktop |
+| `desktop/skill-router.zip` | Uploadable skill with a chat-only routing table (generated) | Claude desktop |
 
 ## Install
 
@@ -52,6 +54,17 @@ Turn off the plugins in `config/plugin-profile.yaml` (dry run first, then apply,
 ```
 
 **claude.ai:** paste `AGENTS.md` into a Project's custom instructions, or upload `docs/ROUTING.md` as Project knowledge.
+
+## Claude desktop app (Chat and Cowork tabs)
+
+The **Code** tab of the desktop app is Claude Code, so `./install.sh user` already covers it. The **Chat** and **Cowork** tabs read their setup from your claude.ai account instead:
+
+1. **Instructions:** paste `desktop/instructions.md` into **Settings → Your Claude → Instructions**. It names only skills that exist in chat; the Claude Code version (`CLAUDE.md`) refers to tools chat doesn't have.
+2. **Skill router:** upload `desktop/skill-router.zip` in **Customize → Skills**, then turn it on. It bundles a chat-only routing table, so it works without this repo. Skills need **code execution and file creation** turned on.
+3. **Memory:** in **Settings → Your Claude → Your memory → Manage**, tell Claude anything from `memory/` you want it to keep, or ask it in a chat.
+4. **Plugins:** turn plugins on or off in **Customize → Plugins**. This is account-wide: it also removes them from Claude Code, and a project can't turn them back on. To have a plugin off by default in Claude Code but on for some projects, use `./install.sh plugins` instead.
+
+`scripts/render_docs.py` regenerates `desktop/skill-router/` and the zip, and fails if `desktop/instructions.md` names a skill that chat doesn't have or grows past 2,500 characters. Edit `desktop/instructions.md` by hand; the rest of `desktop/` is generated.
 
 ## Update after plugin changes
 

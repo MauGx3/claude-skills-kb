@@ -1,8 +1,19 @@
+# Runs locally (`pre-commit install`) and on pre-commit.ci.
+# Generated files are excluded: render_docs.py owns them, and CI fails if they drift.
+exclude: ^(docs/|desktop/skill-router|desktop/skill-router\.zip|catalog/skills-catalog\.json|AGENTS\.md)
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: v5.0.0
     hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
       - id: check-yaml
       - id: check-json
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-executables-have-shebangs
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+ci:
+  autoupdate_schedule: monthly

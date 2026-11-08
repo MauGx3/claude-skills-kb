@@ -26,7 +26,9 @@ jobs:
       - name: Generated docs are up to date
         run: |
           python scripts/render_docs.py
-          git diff --exit-code -- docs AGENTS.md
+          # porcelain also catches new untracked files, which git diff ignores
+          out="$(git status --porcelain -- docs AGENTS.md desktop)"
+          if [ -n "$out" ]; then echo "$out"; git diff -- docs AGENTS.md desktop; exit 1; fi
       - name: Tests
         run: python -m unittest discover -s tests -v
       - name: Shellcheck
