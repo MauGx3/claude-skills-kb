@@ -1,8 +1,8 @@
 # Skills Catalog
 
-_Generated 2026-11-07T17:48:33+00:00 by `scripts/render_docs.py` — do not edit by hand; edit `config/` and re-run._
+_Generated 2026-11-08T16:49:14+00:00 by `scripts/render_docs.py` — do not edit by hand; edit `config/` and re-run._
 
-**75 plugins · 387 skills (323 enabled in Claude Code) · 49 slash commands · 27 subagents**
+**89 plugins · 494 skills (430 enabled in Claude Code) · 49 slash commands · 27 subagents**
 
 Legend: ✅ invocable via `Skill` tool in Claude Code · ⏸ plugin turned off by `config/plugin-profile.yaml` (re-enable per project) · ⬜ present on disk but not exposed (disabled, in-progress, or claude.ai-only library skill).
 
@@ -24,6 +24,7 @@ Invoke: `Skill(skill="<id>")` — or type `/<id>` as the user.
 - [Productivity, notes & memory](#productivity-notes--memory)
 - [Media (video/audio)](#media-videoaudio)
 - [Career & personal](#career--personal)
+- [Uncategorized](#uncategorized)
 
 ## Meta / orchestration / skill system
 
@@ -119,6 +120,16 @@ Source: https://github.com/ajribeiro/napkin-math
 | `napkin-math:estimate` | ✅ | Make a back-of-the-envelope estimate with stated assumptions and a range. Use when the user asks roughly how much, how many, how long or how big something is, asks for a Fermi estimate, a ballpark, or napkin math, or ru… |
 | `napkin-math:sanity-check` | ✅ | Check whether a number someone quoted is plausible, using a quick independent estimate. Use when the user asks "does this number make sense", "is this plausible", "sanity check this figure", pastes a claim with a number… |
 
+### prompt-sharpener `v1.0.0`
+
+_Rewrites every request into a clear, complete prompt and shows it before Claude starts work, with the guesses it made listed underneath. Behind the scenes, it checks outside facts like versions, prices, commands and limits against current sources, and flags only the ones it couldn't confirm._
+
+Source: https://github.com/DeezleSince74/prompt-sharpener · Has hooks
+
+| Skill | | Description |
+|---|---|---|
+| `prompt-sharpener:prompt-sharpener` | ✅ | Rewrites a short, vague, or underspecified prompt into a clear, well-structured one, and quietly checks outside facts (versions, prices, commands, limits, API shapes, rules) against current sources before stating them. … |
+
 ### receipts
 
 _A personal Claude Code impact report for justifying your usage to a manager or a self-review: what you shipped, which projects it went to, and each project's share of your usage. Reads your ~/.claude/projects transcripts and runs read-only git locally; only counts and project names are sent to write it up, and the report stays on your machine._
@@ -211,6 +222,20 @@ Source: https://petrovicistefan.ro
 | `security-review` | ✅ | Security review of the pending changes on the current branch. |
 | `simplify` | ✅ | Review changed code for reuse, simplification, efficiency and altitude cleanups, then apply fixes. Quality only — not a bug hunt. |
 
+### agent-engineering
+
+| Skill | | Description |
+|---|---|---|
+| `agent-engineering:deliver-change` | ✅ |  |
+| `agent-engineering:implement-change` | ✅ |  |
+| `agent-engineering:plan-change` | ✅ |  |
+| `agent-engineering:publish-change` | ✅ |  |
+| `agent-engineering:remediate-findings` | ✅ |  |
+| `agent-engineering:review-change` | ✅ |  |
+| `agent-engineering:review-pr` | ✅ |  |
+| `agent-engineering:setup-project` | ✅ |  |
+| `agent-engineering:verify-change` | ✅ |  |
+
 ### agent-protocols `v1.0.0`
 
 _Structured engineering protocols for AI coding agents, covering the full software development lifecycle from spec to ship._
@@ -293,6 +318,50 @@ _Agent that simplifies and refines code for clarity, consistency, and maintainab
 
 - `code-simplifier:code-simplifier` — Simplifies and refines code for clarity, consistency, and maintainability while preserving all functionality. Focuses on recently modified code unless instructed otherwise.
 
+### engineering-skills `v2.14.9`
+
+_32 production-ready engineering skills: architecture, frontend, backend, fullstack, QA, DevOps, security, AI/ML, data engineering, Playwright, self-improving agent, security suite (adversarial-reviewer, ai-security, cloud-security, incident-response, red-team, threat-detection), Stripe integration, TDD guide, Google Workspace CLI, a11y audit, Snowflake development, and more. v2.8.1 augments senio…_
+
+Source: https://github.com/alirezarezvani/claude-skills/tree/main/engineering-team
+
+| Skill | | Description |
+|---|---|---|
+| `engineering-skills:adversarial-reviewer` | ✅ | Tough, critical review of a diff or PR before merge, through hostile reviewer personas that catch shared blind spots. Use whenever the user wants a change torn apart, a harsh second opinion, or a self-review felt too ag… |
+| `engineering-skills:ai-security` | ✅ | Use when assessing an AI/ML system or LLM agent for prompt injection, jailbreaks, model inversion, data poisoning or tool abuse. Maps findings to MITRE ATLAS and scores robustness with ai_threat_scanner.py. |
+| `engineering-skills:aws-solution-architect` | ✅ | Use when designing or costing an AWS architecture (serverless, Lambda, API Gateway, DynamoDB, ECS, Aurora, CloudFormation, migration to AWS). Designs it with architecture_designer.py, generates stacks with serverless_st… |
+| `engineering-skills:azure-cloud-architect` | ✅ | Use when designing or costing an Azure architecture (AKS, App Service, Functions, Cosmos DB, Bicep or ARM, Azure DevOps, migration to Azure). Designs it with architecture_designer.py, generates Bicep with bicep_generato… |
+| `engineering-skills:cloud-security` | ✅ | Use when checking AWS, Azure or GCP for security misconfigurations: IAM privilege escalation, public buckets, open security groups, IaC gaps. Runs cloud_posture_check.py and maps findings to MITRE ATT&CK. |
+| `engineering-skills:code-reviewer` | ✅ | Use for any code review: a pull request, a diff, a commit, or a pasted function, handler or file in TypeScript, JavaScript, Python, Go, Swift, Kotlin, C#/.NET, Java, C, C++, Rust, Ruby, PHP or Dart/Flutter. Applies per-… |
+| `engineering-skills:email-template-builder` | ✅ | Use when adding or reworking transactional email (React Email templates, Resend, Postmark, SendGrid or SES, preview, i18n, dark mode, deliverability). Builds the template system and provider integration end to end. |
+| `engineering-skills:embedded-iot-mentor` | ✅ | Use for any embedded or IoT hardware project (ESP32, STM32, Arduino, Pico, firmware, PCB, MQTT, Home Assistant, sensor dashboards), before buying parts. Picks the MCU, board and toolchain, decides where readings go and … |
+| `engineering-skills:engineering-skills` | ✅ | Find which engineering skill fits a task: architecture, frontend, backend, QA, DevOps, security, AI/ML, data, cloud. Use whenever the user is unsure which skill to use; load only that one. |
+| `engineering-skills:epic-design` | ✅ | Use for any landing page, hero section or scroll-driven web design that should feel cinematic (parallax, scrollytelling, overlapping sections, text reveals, Apple-style animation), before coding. Inspects assets with in… |
+| `engineering-skills:gcp-cloud-architect` | ✅ | Design, deploy and cut the cost of Google Cloud setups: Cloud Run, GKE, Functions, Cloud SQL, BigQuery, moving to GCP. Use whenever the user asks how to host or run something on GCP, why their GCP bill is high, or plans… |
+| `engineering-skills:incident-commander` | ✅ | Use when declaring or running a production incident or outage, or writing its post-incident review. Classifies severity with incident_classifier.py, rebuilds the timeline with timeline_reconstructor.py and drafts the PI… |
+| `engineering-skills:incident-response` | ✅ | Handle a suspected security breach: triage, SEV1-SEV4 severity, escalation and forensic evidence, per NIST SP 800-61. Use whenever the user thinks they were hacked, sees suspicious activity or a leaked key. Outages: inc… |
+| `engineering-skills:ms365-tenant-manager` | ✅ | Use for Microsoft 365 tenant administration (Entra ID users, Exchange Online, Teams, licenses, Conditional Access, compliance reports). Plans setup with tenant_setup.py, bulk-manages users with user_management.py and ge… |
+| `engineering-skills:named-persona-adversarial-review` | ✅ | Use when a PR has architectural or UX impact, or automated review feels generic, and you want it reviewed through named engineers' documented views (Torvalds, Thompson, Carmack, Beck, Jobs, Cagan). Cites the source for … |
+| `engineering-skills:red-green-proof` | ✅ | Turns a suspected bug into a proven one. Verify the cause against reality before claiming it, write a test that FAILS on the current code, apply the fix, watch it pass — then revert the fix and confirm the test goes red… |
+| `engineering-skills:red-team` | ✅ | Use when planning or running an authorized red team engagement or attack path analysis. Plans the kill chain with engagement_planner.py: MITRE ATT&CK techniques, choke points, OPSEC risk and crown jewels. |
+| `engineering-skills:security-pen-testing` | ✅ | Authorized penetration testing of an app or API: vulnerability scans, OWASP Top 10 checks, dependency audits and a pentest report. Use whenever the user asks if their app is secure or hackable, wants a security scan or … |
+| `engineering-skills:senior-architect` | ✅ | System architecture decisions with a written rationale: monolith vs microservices, database choice, scaling limits, ADRs, Mermaid diagrams. Load whenever the user asks should we split, which database, will it scale, or … |
+| `engineering-skills:senior-backend` | ✅ | Build and fix backend services: REST or GraphQL APIs, auth, microservices, PostgreSQL queries, migrations and load tests. Use whenever the user's API is slow or broken, needs login or auth added, a schema change, or a n… |
+| `engineering-skills:senior-computer-vision` | ✅ | Computer vision models: object detection, segmentation, training a custom model, and optimizing or deploying inference (YOLO, DETR, SAM, ONNX, TensorRT). Use whenever the user wants to detect objects in images or video,… |
+| `engineering-skills:senior-data-engineer` | ✅ | Data pipelines: Airflow DAGs, Spark, dbt, Kafka, ETL/ELT, data quality checks. Load whenever a DAG or batch job times out or fails, data arrives wrong, or the user designs an ingestion pipeline. |
+| `engineering-skills:senior-data-scientist` | ✅ | Design experiments and analyze tabular data: A/B tests, causal inference, feature engineering, model evaluation. Use whenever the user asks how to set up or read an A/B test, whether a change caused a lift, which featur… |
+| `engineering-skills:senior-devops` | ✅ | Set up CI/CD pipelines, infrastructure as code, containers and deployments on AWS, GCP or Azure. Use whenever the user needs a build or deploy pipeline, Terraform, a Dockerfile, or wants to manage a release to the cloud. |
+| `engineering-skills:senior-frontend` | ✅ | Build and review React, Next.js, TypeScript or Tailwind frontends: components, scaffolding, performance and bundle size. Use whenever the user wants a new component or app, a page feels slow, the bundle is too big, or a… |
+| `engineering-skills:senior-fullstack` | ✅ | Start a fullstack project or audit a codebase: pick a stack (Next.js, FastAPI, MERN, Django), scaffold it and score code quality. Use whenever the user asks which stack to use, wants a new web app set up, or asks how go… |
+| `engineering-skills:senior-ml-engineer` | ✅ | Use for putting ML models or LLM features into production: deployment, MLOps, drift monitoring, RAG pipelines, LLM API cost and retries. Deploys with model_deployment_pipeline.py, monitors with ml_monitoring_suite.py an… |
+| `engineering-skills:senior-prompt-engineer` | ✅ | Improve prompts and measure LLM quality: fix inconsistent prompts, build eval sets, score RAG retrieval, check agent tool configs. Use whenever the user's prompt, chatbot or RAG answers are unreliable or they ask how to… |
+| `engineering-skills:senior-qa` | ✅ | Write and improve tests for React or Next.js apps: Jest, React Testing Library, MSW mocks, Playwright E2E, coverage gaps. Use whenever the user asks to add tests to a component or page, mock an API, set up end-to-end te… |
+| `engineering-skills:senior-secops` | ✅ | Find and fix application security problems: security reviews, CVE remediation, hardening, secrets and auth, SOC 2, PCI-DSS, HIPAA and GDPR checks. Use whenever the user asks if their app is secure, needs to patch a vuln… |
+| `engineering-skills:senior-security` | ✅ | Check if a design or code is secure: STRIDE threat model, DREAD risk scores, leaked secret scan. Use whenever the user asks what could be attacked, how risky a feature is, or to find exposed keys. |
+| `engineering-skills:stripe-integration-expert` | ✅ | Use for any Stripe integration: subscriptions, trials, proration, checkout, usage billing, webhooks, customer portal or invoicing in Next.js, Express or Django. Writes idempotent webhook handlers and debugs delivery fai… |
+| `engineering-skills:tdd-guide` | ✅ | Test-first development and test generation for Jest, Pytest, JUnit, Vitest or Mocha: red-green-refactor, fixtures and mocks, coverage gaps. Use whenever the user asks to write tests (before or after the code), mock a de… |
+| `engineering-skills:tech-stack-evaluator` | ✅ | Compare frameworks or tech stacks before committing: side-by-side scoring, total cost of ownership, ecosystem health and migration risk. Use whenever the user asks which framework to pick, X vs Y, whether to switch stac… |
+| `engineering-skills:threat-detection` | ✅ | Use when hunting threats, sweeping IOCs or looking for anomalies in logs and telemetry. Ranks ATT&CK-mapped signals and z-score anomalies with threat_signal_analyzer.py. |
+
 ### mattpocock-skills `v1.2.3` ⏸ off by plugin profile
 
 _Matt Pocock's agent skills for real engineering: grilling, spec/ticket flows, TDD, code review, domain modelling and more. Plug-and-play, not vibe coding._
@@ -348,6 +417,18 @@ _Keep your coding agent up to date with the latest web best practices_
 |---|---|---|
 | `modern-web-guidance:chrome-extensions` | ✅ | Build and publish Chrome Extensions using Manifest V3 best practices. Use this skill whenever the user asks to create, modify, debug, or understand Chrome browser extensions, add-ons, or anything involving the Chrome Ex… |
 | `modern-web-guidance:modern-web-guidance` | ✅ | Search tool for modern web development best practices. MANDATORY: Execute FIRST for all HTML/CSS and clientside JS tasks. Do NOT skip — web APIs evolve rapidly and training weights contain obsolete patterns. Trigger imm… |
+
+### reverse-engineering
+
+| Skill | | Description |
+|---|---|---|
+| `reverse-engineering:reverse-engineering` | ✅ |  |
+
+### vet-before-install
+
+| Skill | | Description |
+|---|---|---|
+| `vet-before-install:vet-before-install` | ✅ |  |
 
 ### zizi-skills `v0.5.0` ⏸ off by plugin profile
 
@@ -709,6 +790,23 @@ Source: https://github.com/adelaidasofia/humanizer · Has hooks
 |---|---|---|
 | `humanizer:humanizer` | ✅ | Remove signs of AI-generated writing from text and rewrite in the author's actual voice. Based on Wikipedia's "Signs of AI writing" guide plus a statistical voice fingerprint built from the author's own corpus. Three mo… |
 
+### slop-stopper
+
+| Skill | | Description |
+|---|---|---|
+| `slop-stopper:final-review` | ✅ |  |
+
+### writing-desk
+
+| Skill | | Description |
+|---|---|---|
+| `writing-desk:write-draft` | ✅ |  |
+| `writing-desk:write-edit` | ✅ |  |
+| `writing-desk:write-email` | ✅ |  |
+| `writing-desk:write-outline` | ✅ |  |
+| `writing-desk:write-refs` | ✅ |  |
+| `writing-desk:write-review` | ✅ |  |
+
 ### writing-skills `v0.6.0`
 
 _16 production writing-style skills for AI agents: 9 measurable frameworks (plain language, ASD-STE100, AP journalism, GOV.UK, Orwell's rules) and 7 character voices, as portable SKILL.md files._
@@ -943,6 +1041,45 @@ Source: https://github.com/Keshab0310/agent-memory · MCP: `agent-memory` · Has
 |---|---|---|
 | `agent-memory:memory-search` | ✅ | Search past work and observations across sessions |
 
+### claude-mem `v15.12.0`
+
+_Persistent memory for AI coding agents: the next session starts where the last one left off. Works with Claude Code, Codex, Cursor, OpenCode and more._
+
+Source: https://github.com/thedotmack/claude-mem#readme · Has hooks
+
+| Skill | | Description |
+|---|---|---|
+| `claude-mem:agent-cost-report` | ✅ | Believable agent cost report for any period, default the last 7 full days PT, not counting today. Measured tokens from Claude Code transcripts priced at OpenRouter list prices (ESTIMATED), measured provider spend when a… |
+| `claude-mem:babysit` | ✅ | Watch a pull request or review cycle until it is ready to merge. Use when asked to babysit, monitor, or keep checking PR comments, reviews, and CI until all actionable issues are resolved. |
+| `claude-mem:backup-setup` | ✅ | Set up, check, or restore local claude-mem database snapshots. Use when the user says "set up backups", "back up my memories", "backup status", or "restore my database". |
+| `claude-mem:build` | ✅ | Fully automate a coding task with make-plan, do, and babysit. |
+| `claude-mem:build-and-release` | ✅ | Fully automate building and releasing a coding task. |
+| `claude-mem:ccs-align` | ✅ | Run the CCS Align seat's hourly breathing cycle — prove the local claude-mem worker is healthy, pull needle observations through search → timeline → get_observations, land them in a seat-owned middle cache via atomic gr… |
+| `claude-mem:childhood` | ✅ | Babysit a shipped release after merge, publication, or deployment. Verify published packages, production behavior, installed plugins, and late CI or user reports until the observation window is clean; use babysit for PR… |
+| `claude-mem:cloud-sync` | ✅ | Set up or check claude-mem cloud sync with cmem.ai Pro. Use when the user says "set up cloud sync", "sync my memories", "cmem pro", "cloud backup", "sync status", or wants their memory database backed up or synced to th… |
+| `claude-mem:design-is` | ✅ | Audit a design against Dieter Rams' ten "Good design is..." principles, then hand off a /make-plan prompt for one of three outcomes — new design, refine design, or redesign. Use when the user says "audit this design", "… |
+| `claude-mem:do` | ✅ | Execute a phased implementation plan using subagents. Use when asked to execute, run, or carry out a plan — especially one created by make-plan. |
+| `claude-mem:handoff` | ✅ | Generate a HANDOFF.md that captures goal, current state, files touched, failed attempts, and next steps — so a fresh Claude session can continue exactly where this one left off. Use when sessions are getting long, Claud… |
+| `claude-mem:how-it-works` | ✅ | Explain how claude-mem captures observations, when memory injection kicks in, and where data lives. Use when the user asks "how does claude-mem work?" or "what is this thing doing?". |
+| `claude-mem:knowledge-agent` | ✅ | Build and query AI-powered knowledge bases from claude-mem observations. Use when users want to create focused "brains" from their observation history, ask questions about past work patterns, or compile expertise on spe… |
+| `claude-mem:learn-codebase` | ✅ | Prime a codebase by reading every source file in full. Use when starting work on a new or unfamiliar project, or when the user asks to "learn the codebase", "read the codebase", "prime", or "get up to speed". |
+| `claude-mem:make-plan` | ✅ | Create a detailed, phased implementation plan with documentation discovery. Use when asked to plan a feature, task, or multi-step implementation — especially before executing with do. |
+| `claude-mem:mem-search` | ✅ |  |
+| `claude-mem:mode-creator` | ✅ | Interactively create, install, activate, and verify custom claude-mem modes, including domain-specific observation types, concept tags, optional Telegram alerts, bot setup, worker restart, and startup-context verificati… |
+| `claude-mem:oh-my-issues` | ✅ | Cluster a GitHub issue backlog by root cause into a small set of plan-master issues, redirect children with a standardized comment, and bundle architectural-fix PRs that close clusters atomically. Use when an issue trac… |
+| `claude-mem:owner-goals` | ✅ | Map what the owner wants from the prompts they typed themselves (prompts an agent wrote are left out), then sort it into focus areas, asks and rules, each with dated quotes, and save them to My Work (areas as My Focus s… |
+| `claude-mem:pathfinder` | ✅ | Map a codebase into feature-grouped flowcharts, identify duplicated concerns across features, and propose a unified architecture. Use when asked to "find the ideal path," unify duplicated systems, or audit architecture … |
+| `claude-mem:release` | ✅ | Fully automate a release with version-bump and childhood. |
+| `claude-mem:request-progress` | ✅ | Group recent conversations into overall requests, review each one's progress from memory, sort each into one of the owner's focus areas, and write the build story, so My Work shows progress meters, shipping velocity and… |
+| `claude-mem:screenpipe` | ✅ | Search screen and audio history recorded by Screenpipe and optionally save selected context into claude-mem. Use when the user asks to recall desktop activity, a meeting, or something seen in another app through Screenp… |
+| `claude-mem:smart-explore` | ✅ | Token-optimized structural code search using tree-sitter AST parsing. Use instead of reading full files when you need to understand code structure, find functions, or explore a codebase efficiently. |
+| `claude-mem:standup` | ✅ | Facilitate a read-only standup across git worktrees, branches, or PRs to compare changes and produce one consolidation plan. |
+| `claude-mem:timeline-report` | ✅ | Generate a "Journey Into [Project]" narrative report analyzing a project's entire development history from claude-mem's timeline. Use when asked for a timeline report, project history analysis, development journey, or f… |
+| `claude-mem:version-bump` | ✅ | Maintainer release workflow for the thedotmack/claude-mem repository only. Handles version increments across package.json, marketplace.json, plugin.json manifests, build verification, git tagging, GitHub releases, and c… |
+| `claude-mem:weekly-digests` | ✅ | Generate a serial week-by-week narrative digest of a project's full claude-mem timeline. Splits the timeline into per-ISO-week files, then runs one consecutive subagent per week — each receiving the prior week's carry-f… |
+| `claude-mem:what-the` | ✅ | What the? Use when the user wants a plain-English breakdown of something technical — the who, what, where, why, and when. |
+| `claude-mem:wowerpoint` | ✅ | Turn one document into a kawaii NotebookLM slide deck. Use for "wowerpoint this", "make a deck about <file>", "turn this report into slides", or any request to render a single document as shareable narrative slides. |
+
 ### claude-memory `v1.0.0`
 
 _Structured memory system for Claude Code — categorized memories with recall/remember patterns, startup injection, and file templates_
@@ -967,6 +1104,12 @@ Source: https://desktopcommander.app · MCP: `desktop-commander`
 | `desktop-commander:knowledge-base` | ✅ | Create and maintain a Markdown knowledge base that any AI agent can read, search, and update. Use when the user wants to start a knowledge base, add or update notes, organize docs/notes for an agent or LLM to consume, b… |
 | `desktop-commander:obsidian-vault` | ✅ | Organize Obsidian vaults with MOCs, wikilinks, frontmatter/properties, dashboards, orphan-note checks, and cleanup workflows. Use ONLY when the user explicitly refers to Obsidian — by naming "Obsidian", an Obsidian "vau… |
 | `desktop-commander:terminal` | ✅ | Use Desktop Commander for terminal and command-line work, especially anything that needs a shell whose state persists across turns: Python/Node REPLs, database shells, dev servers and other long-running processes, SSH i… |
+
+### featury
+
+| Skill | | Description |
+|---|---|---|
+| `featury:featury` | ✅ |  |
 
 ### Notion `v0.1.0`
 
@@ -1005,6 +1148,12 @@ MCP: `asana`, `atlassian`, `clickup`, `gmail`, `google calendar`, `linear`, `mon
 | `productivity:start` | ✅ | Initialize the productivity system and open the dashboard. Use when setting up the plugin for the first time, bootstrapping working memory from your existing task list, or decoding the shorthand (nicknames, acronyms, pr… |
 | `productivity:task-management` | ✅ | Simple task management using a shared TASKS.md file. Reference this when the user asks about their tasks, wants to add/complete tasks, or needs help tracking commitments. |
 | `productivity:update` | ✅ | Sync tasks and refresh memory from your current activity. Use when pulling new assignments from your project tracker into TASKS.md, triaging stale or overdue tasks, filling memory gaps for unknown people or projects, or… |
+
+### transcript-keeper
+
+| Skill | | Description |
+|---|---|---|
+| `transcript-keeper:restore` | ✅ |  |
 
 ## Media (video/audio)
 
@@ -1076,6 +1225,12 @@ Source: https://github.com/RachaelQuisel/github-portfolio-builder
 |---|---|---|
 | `github-portfolio-builder:github-portfolio-builder` | ✅ | Review a GitHub profile or repository as professional portfolio evidence and suggest prioritized improvements. Use for GitHub presentation, case studies, reusable examples, attribution, licensing, and claim verification… |
 
+### infinite-resume
+
+| Skill | | Description |
+|---|---|---|
+| `infinite-resume:resume-builder` | ✅ |  |
+
 ### rankedin `v0.1.1`
 
 _Understand where you stand professionally and decide what to do next. Get direction on your next career move, a job search that isn't working, changing careers, AI changing your job, or building your professional reputation — right away, with no upload. Add your own LinkedIn data export for personal profile scores, strengths and gaps, peer comparison, AI resilience and network insight._
@@ -1092,3 +1247,40 @@ Source: https://rankedin.app · MCP: `rankedin`
 _Review the text of a LinkedIn profile section by section and turn it into a resume that opens in the ResumeNext editor._
 
 Source: https://resumenext.io/mcp#linkedin · MCP: `resumenext-linkedin-resume`
+
+### superme
+
+| Skill | | Description |
+|---|---|---|
+| `superme:ask-for-a-raise` | ✅ |  |
+| `superme:change-jobs` | ✅ |  |
+| `superme:choose-software` | ✅ |  |
+| `superme:close-deals` | ✅ |  |
+| `superme:evaluate-metrics` | ✅ |  |
+| `superme:fundraise` | ✅ |  |
+| `superme:get-buy-in` | ✅ |  |
+| `superme:get-customers` | ✅ |  |
+| `superme:hire-someone` | ✅ |  |
+| `superme:how-do-others-handle-this` | ✅ |  |
+| `superme:manage-a-team` | ✅ |  |
+| `superme:pick-metrics` | ✅ |  |
+| `superme:prep-for-a-meeting` | ✅ |  |
+| `superme:prep-for-an-interview` | ✅ |  |
+| `superme:prioritize-features` | ✅ |  |
+| `superme:review-doc` | ✅ |  |
+| `superme:set-pricing` | ✅ |  |
+| `superme:validate-an-idea` | ✅ |  |
+
+## Uncategorized
+
+### decipher
+
+| Skill | | Description |
+|---|---|---|
+| `decipher:decipher` | ✅ |  |
+
+### inam-protocol
+
+| Skill | | Description |
+|---|---|---|
+| `inam-protocol:inam-protocol` | ✅ |  |

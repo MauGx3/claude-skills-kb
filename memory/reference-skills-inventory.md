@@ -4,7 +4,7 @@ description: Inventory of installed Claude Code skills, plugins, commands and su
 type: reference
 ---
 
-As of 2026-11-07 the account has **75 plugins**, **387 skill files**, and **323 skills enabled** for the
+As of 2026-11-08 the account has **89 plugins**, **494 skills** catalogued, and **430 skills enabled** for the
 `Skill` tool. There are also **49 slash commands** and **27 subagents**.
 
 Where the files live in a Claude Code cloud session:

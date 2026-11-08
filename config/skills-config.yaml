@@ -1,7 +1,8 @@
 # Skills routing configuration for agents in Claude / Claude Code
 # Single source of truth for ROUTING.md (rendered by scripts/render_docs.py).
 # IDs are exactly what you pass to the Skill tool: Skill(skill="<id>").
-# Verified against the live session of 2026-11-07. Regenerate the catalog after plugin changes.
+# Verified against the live session of 2026-11-07. Plugins installed later (engineering-skills, claude-mem,
+# prompt-sharpener and others) were merged in on 2026-11-08; see catalog/enabled-skills.txt.
 
 version: 1
 
@@ -23,10 +24,10 @@ rules:
 # ---------------------------------------------------------------------------
 categories:
   "Meta / orchestration / skill system":
-    plugins: [superpowers, agent-army, agent-discussion, adaptive-agent, skill-creator, task-observer, claude-md-management, claude-code-setup, setup-audit, session-report, receipts, ai-mentor, flight-deck, agent-estimate, napkin-math]
+    plugins: [superpowers, agent-army, agent-discussion, adaptive-agent, skill-creator, task-observer, claude-md-management, claude-code-setup, setup-audit, session-report, receipts, ai-mentor, flight-deck, agent-estimate, napkin-math, prompt-sharpener]
     builtins: [update-config, keybindings-help, fewer-permission-prompts, loop, plugin-authoring, init]
   "Software engineering lifecycle":
-    plugins: [agent-protocols, mattpocock-skills, zizi-skills, code-review, code-simplifier, claude-security, security-guidance, modern-web-guidance]
+    plugins: [agent-protocols, mattpocock-skills, zizi-skills, code-review, code-simplifier, claude-security, security-guidance, modern-web-guidance, engineering-skills, agent-engineering, vet-before-install, reverse-engineering]
     builtins: [code-review, simplify, security-review, run, claude-api]
   "Language / platform specific":
     plugins: [qt-development-skills, cloudflare, pyright-lsp, typescript-lsp, rust-analyzer-lsp, lua-lsp, github, contentasoft-cad-converter]
@@ -38,7 +39,7 @@ categories:
   "Academic research & writing":
     plugins: [research-superpowers]
   "Writing, tone & humanizing":
-    plugins: [writing-skills, humanizer, humanize-kit, caveman]
+    plugins: [writing-skills, humanizer, humanize-kit, caveman, writing-desk, slop-stopper]
   "Documents & office files":
     plugins: [anthropic-skills]
   "Data & analytics":
@@ -48,11 +49,11 @@ categories:
   "Legal & governance":
     plugins: [ai-governance-legal]
   "Productivity, notes & memory":
-    plugins: [productivity, Notion, obsidian-notes, claude-memory, agent-memory, desktop-commander]
+    plugins: [productivity, Notion, obsidian-notes, claude-memory, agent-memory, desktop-commander, claude-mem, featury, transcript-keeper]
   "Media (video/audio)":
     plugins: [video-cleanup, ffmpeg-llm, youtube-transcriber, watch-video]
   "Career & personal":
-    plugins: [rankedin, resumenext-linkedin-resume, github-portfolio-builder, adhd-study-coach]
+    plugins: [rankedin, resumenext-linkedin-resume, github-portfolio-builder, adhd-study-coach, superme, infinite-resume]
 
 # ---------------------------------------------------------------------------
 # Intent routing: "when the task looks like X, load Y"
@@ -143,6 +144,14 @@ routing:
     alternates: [cloudflare:wrangler, cloudflare:durable-objects, cloudflare:agents-sdk, cloudflare:nextjs-on-cloudflare, cloudflare:cloudflare]
   - intent: Chrome extension
     use: [modern-web-guidance:chrome-extensions]
+
+  - intent: Sharpen or rewrite a prompt before running it
+    use: [prompt-sharpener:prompt-sharpener]
+  - intent: Vet a third-party skill, plugin or package before installing it
+    use: [vet-before-install:vet-before-install]
+  - intent: Full change delivery (plan, implement, verify, review, publish)
+    use: [agent-engineering:deliver-change]
+    alternates: [agent-engineering:plan-change, agent-engineering:implement-change, agent-engineering:verify-change, agent-engineering:review-change, agent-engineering:publish-change]
 
   # --- Review
   - intent: Review a diff / PR for bugs
@@ -243,6 +252,12 @@ routing:
   - intent: Fun persona voice
     use: [writing-skills:yoda]
     alternates: [writing-skills:jack-sparrow, writing-skills:shrek, writing-skills:ted-lasso, writing-skills:paddington, writing-skills:winnie-the-pooh, writing-skills:bob-ross, writing-skills:scott-adams]
+  - intent: Draft, outline or edit a document or email
+    use: [writing-desk:write-draft]
+    alternates: [writing-desk:write-outline, writing-desk:write-edit, writing-desk:write-email, writing-desk:write-review, writing-desk:write-refs]
+  - intent: Final pass to remove AI-sounding phrasing from text
+    use: [slop-stopper:final-review]
+    alternates: [humanizer:humanizer]
   - intent: Terse output to save tokens
     use: [caveman:caveman]
   - intent: Writing prompts/docs for other agents
@@ -322,6 +337,11 @@ routing:
   - intent: Career move / LinkedIn profile
     use: [rankedin:next-career-move]
     alternates: [rankedin:profile-review, github-portfolio-builder:github-portfolio-builder]
+  - intent: Salary raise, job change, hiring or fundraising advice
+    use: [superme:ask-for-a-raise]
+    alternates: [superme:change-jobs, superme:hire-someone, superme:fundraise]
+  - intent: Resume from a LinkedIn profile or old CV
+    use: [infinite-resume:resume-builder]
   - intent: Learning / tutoring
     use: [ai-mentor:mentor]
     alternates: [anthropic-skills:learn]
