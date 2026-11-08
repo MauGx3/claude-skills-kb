@@ -90,5 +90,44 @@ class FindSkill(unittest.TestCase):
         self.assertNotIn("zizi-skills:", out)
 
 
+class Desktop(unittest.TestCase):
+    """Files for the Claude desktop app's Chat/Cowork tabs (not Claude Code)."""
+
+    def setUp(self):
+        self.cat = json.load(open(os.path.join(ROOT, "catalog", "skills-catalog.json")))
+        self.skills = {s["invoke_as"]: s for s in self.cat["skills"]}
+
+    def test_instructions_only_name_chat_skills(self):
+        text = open(os.path.join(ROOT, "desktop", "instructions.md")).read()
+        self.assertLessEqual(len(text), 2500)
+        for i in re.findall(r"`([\w-]+:[\w-]+)`", text):
+            rec = self.skills.get(i)
+            self.assertTrue(rec and rec["enabled"] and rec["source"] != "builtin", i)
+        # Claude Code-only syntax and built-ins don't exist in chat.
+        for cc_only in ("Skill(", "update-config", "`simplify`", "`run`", "`loop`"):
+            self.assertNotIn(cc_only, text)
+
+    def test_zip_matches_folder_and_is_uploadable(self):
+        import zipfile
+        z = zipfile.ZipFile(os.path.join(ROOT, "desktop", "skill-router.zip"))
+        self.assertIsNone(z.testzip())
+        self.assertEqual(sorted(z.namelist()), ["skill-router/ROUTING.md", "skill-router/SKILL.md"])
+        for name in ("SKILL.md", "ROUTING.md"):
+            on_disk = open(os.path.join(ROOT, "desktop", "skill-router", name)).read()
+            self.assertEqual(z.read(f"skill-router/{name}").decode(), on_disk)
+        skill = z.read("skill-router/SKILL.md").decode()
+        fm = re.match(r"^---\n(.*?)\n---\n", skill, re.S).group(1)
+        name = re.search(r"^name: (.+)$", fm, re.M).group(1)
+        desc = re.search(r"^description: (.+)$", fm, re.M).group(1)
+        self.assertRegex(name, r"^[a-z0-9-]{1,64}$")
+        self.assertLessEqual(len(desc), 1024)
+
+    def test_chat_routing_has_no_builtins(self):
+        text = open(os.path.join(ROOT, "desktop", "skill-router", "ROUTING.md")).read()
+        builtins = {s["id"] for s in self.cat["skills"] if s["source"] == "builtin"}
+        used = set(re.findall(r"`([\w:-]+)`", text))
+        self.assertEqual(used & builtins, set())
+
+
 if __name__ == "__main__":
     unittest.main()
