@@ -1,6 +1,6 @@
 # Skill routing for Claude chat and Cowork
 
-_Generated 2026-11-07T17:48:33+00:00 by `scripts/render_docs.py` from `config/skills-config.yaml`._
+_Generated 2026-11-08T16:49:14+00:00 by `scripts/render_docs.py` from `config/skills-config.yaml`._
 
 Use the **Use** skill first. Use an alternate only when the person names it or the first doesn't fit.
 Skills are listed only if they are available in chat; Claude Code-only tools are left out.
@@ -34,6 +34,9 @@ Skills are listed only if they are available in chat; Claude Code-only tools are
 | Qt / QML / C++ Qt | `qt-development-skills:qt-qml` | `qt-development-skills:qt-cmake-project`, `qt-development-skills:qt-qml-review`, `qt-development-skills:qt-cpp-review` |
 | Cloudflare Workers / Durable Objects / Wrangler | `cloudflare:workers-best-practices` | `cloudflare:wrangler`, `cloudflare:durable-objects`, `cloudflare:agents-sdk` |
 | Chrome extension | `modern-web-guidance:chrome-extensions` | — |
+| Sharpen or rewrite a prompt before running it | `prompt-sharpener:prompt-sharpener` | — |
+| Vet a third-party skill, plugin or package before installing it | `vet-before-install:vet-before-install` | — |
+| Full change delivery (plan, implement, verify, review, publish) | `agent-engineering:deliver-change` | `agent-engineering:plan-change`, `agent-engineering:implement-change`, `agent-engineering:verify-change` |
 | Review a diff / PR for bugs | `agent-protocols:code-review-and-quality` | `mattpocock-skills:code-review`, `zizi-skills:adversarial-review`, `superpowers:requesting-code-review` |
 | Received review feedback to act on | `superpowers:receiving-code-review` | — |
 | Simplify / clean up changed code | `agent-protocols:code-simplification` | `zizi-skills:code-quality` |
@@ -63,6 +66,8 @@ Skills are listed only if they are available in chat; Claude Code-only tools are
 | Make AI-sounding text sound human | `humanizer:humanizer` | `humanize-kit:humanize`, `humanize-kit:humanize-ig`, `humanize-kit:voice-profiler` |
 | Plain / professional writing style | `writing-skills:plain-language` | `writing-skills:business-writing`, `writing-skills:corporate-communication`, `writing-skills:orwells-rules` |
 | Fun persona voice | `writing-skills:yoda` | `writing-skills:jack-sparrow`, `writing-skills:shrek`, `writing-skills:ted-lasso` |
+| Draft, outline or edit a document or email | `writing-desk:write-draft` | `writing-desk:write-outline`, `writing-desk:write-edit`, `writing-desk:write-email` |
+| Final pass to remove AI-sounding phrasing from text | `slop-stopper:final-review` | `humanizer:humanizer` |
 | Terse output to save tokens | `caveman:caveman` | — |
 | Writing prompts/docs for other agents | `mattpocock-skills:writing-for-agents` | `agent-protocols:context-engineering` |
 | Status update / standup | `zizi-skills:status-update` | `writing-skills:business-writing` |
@@ -86,6 +91,8 @@ Skills are listed only if they are available in chat; Claude Code-only tools are
 | Clean up video/audio | `video-cleanup:video-cleanup` | `ffmpeg-llm:ffmpeg-command` |
 | Understand a video / YouTube | `watch-video:watch-video` | `youtube-transcriber:youtube-transcriber` |
 | Career move / LinkedIn profile | `rankedin:next-career-move` | `rankedin:profile-review`, `github-portfolio-builder:github-portfolio-builder` |
+| Salary raise, job change, hiring or fundraising advice | `superme:ask-for-a-raise` | `superme:change-jobs`, `superme:hire-someone`, `superme:fundraise` |
+| Resume from a LinkedIn profile or old CV | `infinite-resume:resume-builder` | — |
 | Learning / tutoring | `ai-mentor:mentor` | `anthropic-skills:learn` |
 | Startup go-to-market | `zizi-skills:first-customers` | `zizi-skills:marketing`, `zizi-skills:app-store` |
 
