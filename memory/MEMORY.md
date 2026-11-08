@@ -4,7 +4,7 @@ Structured memory index (format: claude-memory:structured-memory). Copy this fol
 `~/.claude/projects/<project-path>/memory/`, or merge the entries into an existing MEMORY.md.
 
 ## Reference
-- [reference-skills-inventory.md](reference-skills-inventory.md) — What is installed: 75 plugins, 323 enabled skills, where the files live
+- [reference-skills-inventory.md](reference-skills-inventory.md) — What is installed: 89 plugins, 430 enabled skills, where the files live
 - [reference-skill-routing.md](reference-skill-routing.md) — Which skill to load for which task, and the primary skill when several overlap
 - [reference-mcp-dependencies.md](reference-mcp-dependencies.md) — Which skills need which MCP servers, and what failed in the cloud sandbox
 
