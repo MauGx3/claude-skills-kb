@@ -12,4 +12,5 @@ Structured memory index (format: claude-memory:structured-memory). Copy this fol
 - [feedback-skill-first.md](feedback-skill-first.md) — Load the matching skill before acting, and use one primary per discipline
 
 ## Project
+- [reference-kb-workflows.md](reference-kb-workflows.md) — Regenerate, test, plugin profile, desktop setup, PR and CI routine for this repo
 - [project-skills-kb-maintenance.md](project-skills-kb-maintenance.md) — How to regenerate the catalog and docs after plugin changes
